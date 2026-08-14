@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Core;
 using Fusion;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -81,6 +82,7 @@ namespace Network
         {
             var runner = NetworkManager.Instance.CreateRunner();
             runner.ProvideInput = true;
+            GlobalEventHub.Instance.Network.Init(runner);
             
             if (!runner.gameObject.TryGetComponent(out NetworkSceneManagerDefault sceneManager))
             {
