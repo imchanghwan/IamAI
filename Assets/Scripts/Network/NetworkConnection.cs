@@ -80,7 +80,8 @@ namespace Network
             )
         {
             var runner = NetworkManager.Instance.CreateRunner();
-
+            runner.ProvideInput = true;
+            
             if (!runner.gameObject.TryGetComponent(out NetworkSceneManagerDefault sceneManager))
             {
                 sceneManager = runner.gameObject.AddComponent<NetworkSceneManagerDefault>();

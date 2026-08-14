@@ -1,4 +1,5 @@
 using System;
+using Core;
 using Network;
 using TMPro;
 using UnityEngine;
@@ -33,19 +34,27 @@ public class Lobby : MonoBehaviour
 
     private async void HandleQuickMatchButton()
     {
+        SetNickname(Nickname);
         int sceneIndex = SceneName.GetIndex(SceneName.Room);
         await NetworkManager.Instance.Connection.MatchQuick(sceneIndex);
     }
 
     private async void HandleCreateButton()
     {
+        SetNickname(Nickname);
         int sceneIndex = SceneName.GetIndex(SceneName.Room);
         await NetworkManager.Instance.Connection.CreateRoom(sceneIndex);
     }
     
     private async void HandleJoinButton()
     {
+        SetNickname(Nickname);
         int sceneIndex = SceneName.GetIndex(SceneName.Room);
         await NetworkManager.Instance.Connection.JoinRoom(RoomCode, sceneIndex);
+    }
+
+    private void SetNickname(string nickname)
+    {
+        GameManager.Instance.LocalNickname = nickname;
     }
 }
