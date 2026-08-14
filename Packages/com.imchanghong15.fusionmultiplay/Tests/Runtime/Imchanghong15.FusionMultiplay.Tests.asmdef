@@ -1,0 +1,11 @@
+{
+    "name": "Imchanghong15.FusionMultiplay.Tests",
+    "references": [
+        "Imchanghong15.FusionMultiplay"
+    ],
+    "optionalUnityReferences": [
+        "TestAssemblies"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": []
+}
