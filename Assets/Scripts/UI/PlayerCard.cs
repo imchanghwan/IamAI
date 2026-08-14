@@ -1,15 +1,22 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace UI
 {
     public class PlayerCard : MonoBehaviour
     {
-        [field: SerializeField] public TMP_Text Nickname { get; private set; }
+        [SerializeField] public Image playerImage;
+        [SerializeField] public TMP_Text nickname;
 
-        public void SetNickname(string nickname)
+        public void SetPlayerImage(Sprite sprite)
         {
-            Nickname.text = nickname;
+            playerImage.sprite = sprite;
+        }
+        
+        public void SetNickname(string newName)
+        {
+            nickname.text = newName;
         }
     }
 }
