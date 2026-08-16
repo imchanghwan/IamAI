@@ -22,7 +22,7 @@ namespace UI
 
         private void Start()
         {
-            nicknameInput.text = GameManager.Instance.LocalNickname;
+            nicknameInput.text = LocalDataManager.Instance.Nickname;
         }
 
         private void OnEnable()
@@ -49,13 +49,13 @@ namespace UI
             
             if (result is { Ok: true })
             {
-                var roomInfo = GameManager.Instance.RoomInfo;
-                string roomCode = (string)roomInfo.Properties[PrefKeys.RoomCode];
+                string roomCode = RoomManager.Instance.RoomCode;
                 Debug.Log($"[QuickJoin] 참가 성공! 방 코드: {roomCode}");
                 // UI 전환, 씬 로드 등
             }
             else
             {
+                SetUIInteractable(true);
                 Debug.LogError($"매칭 실패: {result?.ShutdownReason}");
                 // 오류 UI 표시 등
             }
@@ -71,13 +71,14 @@ namespace UI
             
             if (result is { Ok: true })
             {
-                var roomInfo = GameManager.Instance.RoomInfo;
-                string code = (string)roomInfo.Properties[PrefKeys.RoomCode];
+                string roomCode = RoomManager.Instance.RoomCode;
+                bool isPrivate = RoomManager.Instance.IsPrivate;
                 
-                Debug.Log($"[{code}] 방 생성 성공! ({(roomInfo.IsVisible ? "비공개" : "공개")})");
+                Debug.Log($"[{roomCode}] 방 생성 성공! ({(isPrivate ? "비공개" : "공개")})");
             }
             else
             {
+                SetUIInteractable(true);
                 Debug.LogError($"방 생성 실패: {result?.ShutdownReason}");
             }
         }
@@ -103,7 +104,7 @@ namespace UI
 
         private void SetNickname(string nickname)
         {
-            GameManager.Instance.LocalNickname = nickname;
+            LocalDataManager.Instance.Nickname = nickname;
         }
 
         private void SetUIInteractable(bool interactable)

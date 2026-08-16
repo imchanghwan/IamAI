@@ -17,16 +17,12 @@ namespace UI
         [SerializeField] private Button leaveButton;
         [SerializeField] private Button startButton;
         
-        [SerializeField] private RectTransform uiContainer;
         [SerializeField] private NetworkObject playerCardPrefab;
         
-        private SessionInfo _roomInfo;
         private readonly Dictionary<PlayerRef, NetworkObject> _players = new();
 
         private void Start()
         {
-            _roomInfo = GameManager.Instance.RoomInfo;
-    
             UpdateRoomCode();
         }
 
@@ -52,16 +48,7 @@ namespace UI
 
         private void UpdateRoomCode()
         {
-            if (_roomInfo == null) 
-            {
-                roomCode.text = "연결 중..."; // 또는 string.Empty
-                return;
-            }
-
-            if (_roomInfo.Properties.TryGetValue(PrefKeys.RoomCode, out var prop))
-            {
-                roomCode.text = (string)prop; 
-            }
+            roomCode.text = RoomManager.Instance.RoomCode;
         }
         
         private void AddPlayerUI(NetworkRunner runner, PlayerRef player)

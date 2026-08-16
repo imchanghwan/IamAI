@@ -1,3 +1,6 @@
+using System;
+using System.Collections.Generic;
+using EventDispatchers;
 using Fusion;
 using Network;
 using UnityEngine;
@@ -5,34 +8,67 @@ using Utils;
 
 namespace Core
 {
-    public class GameManager : SingletonPersistent<GameManager>
+    public class GameManager : Singleton<GameManager>
     {
-        public string LocalNickname
+        [SerializeField] private NetworkObject playerPrefab;
+        private readonly Dictionary<PlayerRef, NetworkObject> _players = new();
+        // private NetworkRunner _runner;
+        private NetworkEventDispatcher _dispatcher;
+
+        protected override void Awake()
         {
-            get
-            {
-                if (PlayerPrefs.HasKey(PrefKeys.Nickname))
-                {
-                    return PlayerPrefs.GetString(PrefKeys.Nickname);
-                }
-                
-                return string.Empty;
-            }
-            set => PlayerPrefs.SetString(PrefKeys.Nickname, value);
+            base.Awake();
+            // _runner = NetworkManager.Instance.Runner;
+            _dispatcher = GlobalEventHub.Instance.Network;
         }
 
-        public SessionInfo RoomInfo
+        private void OnEnable()
         {
-            get
+            _dispatcher.OnSceneLoadDoneEvent += OnSceneLoadDone;
+            _dispatcher.OnInputEvent += HandleInput;
+            _dispatcher.OnPlayerLeftEvent += HandlePlayerLeft;
+        }
+
+        private void OnDisable()
+        {
+            _dispatcher.OnSceneLoadDoneEvent -= OnSceneLoadDone;
+            _dispatcher.OnInputEvent -= HandleInput;
+            _dispatcher.OnPlayerLeftEvent -= HandlePlayerLeft;
+        }
+        
+        
+        private void OnSceneLoadDone(NetworkRunner runner)
+        {
+            if (runner.IsServer)
             {
-                if (NetworkManager.Instance.Runner == null) 
-                {
-                    Debug.LogWarning("Runner가 생성되지 않았음");
-                    return null;
-                }
-                
-                return NetworkManager.Instance.Runner.SessionInfo;
+                SpawnAllPlayers(runner);
             }
+        }
+
+        private void SpawnAllPlayers(NetworkRunner runner)
+        {
+            foreach (var player in runner.ActivePlayers)
+            {
+                _players[player] = 
+                    runner.Spawn(playerPrefab, Vector3.zero, Quaternion.identity, player);
+            }
+        }
+
+        private void HandleInput(NetworkRunner runner, NetworkInput input)
+        {
+            input.Set(new NetworkInputData
+            {
+                MoveDirection = new Vector2(
+                    Input.GetAxisRaw("Horizontal"),
+                    Input.GetAxisRaw("Vertical")
+                ).normalized
+            });
+        }
+
+        private void HandlePlayerLeft(NetworkRunner runner, PlayerRef player)
+        {
+            if (_players.Remove(player, out var obj))
+                runner.Despawn(obj);
         }
     }
 }

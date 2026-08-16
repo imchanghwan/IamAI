@@ -17,12 +17,12 @@ namespace UI
 
         public override void Spawned()
         {
-            var parent = UIManager.Instance.PlayerUIContainer;
+            var parent = RoomUIManager.Instance.PlayerUIContainer;
             transform.SetParent(parent, false);
 
             if (HasInputAuthority)
             {
-                var nickname = GameManager.Instance.LocalNickname;
+                var nickname = LocalDataManager.Instance.Nickname;
                 RPC_SetNickname(nickname);
             }
         }

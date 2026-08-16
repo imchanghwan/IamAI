@@ -1,4 +1,6 @@
 using Fusion;
+using Network;
+using Camera;
 using UnityEngine;
 
 public class PlayerController : NetworkBehaviour
@@ -12,7 +14,7 @@ public class PlayerController : NetworkBehaviour
         _rb = GetComponent<Rigidbody2D>();
 
         if (HasInputAuthority)
-            Camera.main?.GetComponent<CameraFollow>()?.SetTarget(transform);
+            UnityEngine.Camera.main?.GetComponent<CameraFollow>()?.SetTarget(transform);
     }
 
     public override void FixedUpdateNetwork()

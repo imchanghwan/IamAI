@@ -14,6 +14,8 @@ namespace EventDispatchers
         public event Action<NetworkRunner> OnConnectedToServerEvent;
         public event Action<NetworkRunner, NetDisconnectReason> OnDisconnectedEvent;
         public event Action<NetworkRunner, List<SessionInfo>> OnSessionListUpdatedEvent;
+        public event Action<NetworkRunner, NetworkInput> OnInputEvent;
+        public event Action<NetworkRunner> OnSceneLoadDoneEvent;
 
         private NetworkRunner _runner;
 
@@ -64,17 +66,25 @@ namespace EventDispatchers
             OnSessionListUpdatedEvent?.Invoke(runner, sessionList);
         }
 
+        public void OnInput(NetworkRunner runner, NetworkInput input)
+        {
+            OnInputEvent?.Invoke(runner, input);
+        }
+
+        public void OnSceneLoadDone(NetworkRunner runner)
+        {
+            OnSceneLoadDoneEvent?.Invoke(runner);
+        }
+        
         public void OnObjectExitAOI(NetworkRunner runner, NetworkObject obj, PlayerRef player) { }
         public void OnObjectEnterAOI(NetworkRunner runner, NetworkObject obj, PlayerRef player) { }
         public void OnConnectRequest(NetworkRunner runner, NetworkRunnerCallbackArgs.ConnectRequest request, byte[] token) { }
         public void OnConnectFailed(NetworkRunner runner, NetAddress remoteAddress, NetConnectFailedReason reason) { }
         public void OnReliableDataReceived(NetworkRunner runner, PlayerRef player, ReliableKey key, ReadOnlySpan<byte> data) { }
         public void OnReliableDataProgress(NetworkRunner runner, PlayerRef player, ReliableKey key, float progress) { }
-        public void OnInput(NetworkRunner runner, NetworkInput input) { }
         public void OnInputMissing(NetworkRunner runner, PlayerRef player, NetworkInput input) { }
         public void OnCustomAuthenticationResponse(NetworkRunner runner, Dictionary<string, object> data) { }
         public void OnHostMigration(NetworkRunner runner, HostMigrationToken hostMigrationToken) { }
-        public void OnSceneLoadDone(NetworkRunner runner) { }
         public void OnSceneLoadStart(NetworkRunner runner) { }
     }
 }

@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 6992287493405524283}
   - component: {fileID: 8291368597175052867}
   - component: {fileID: 7860356747536777808}
-  - component: {fileID: 1584478876837913450}
+  - component: {fileID: 4205018893587876544}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -179,7 +179,7 @@ MonoBehaviour:
   NestedObjects: []
   NetworkedBehaviours:
   - {fileID: 7860356747536777808}
-  - {fileID: 1584478876837913450}
+  - {fileID: 4205018893587876544}
   ForceRemoteRenderTimeframe: 0
 --- !u!114 &7860356747536777808
 MonoBehaviour:
@@ -221,7 +221,7 @@ MonoBehaviour:
     MinImpactfulCollisionAlignment: 0.3
     ImpactStartCorrectionTime: 0.1
     ImpactCorrectionTimeComplete: 0.3
---- !u!114 &1584478876837913450
+--- !u!114 &4205018893587876544
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -230,7 +230,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 6809571545585375877}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7dc81dab1c749fa41bbdcee3da79ca0b, type: 3}
+  m_Script: {fileID: 11500000, guid: df31f70b7f3cb744fbc87defc8f44691, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PlayerController
+  m_EditorClassIdentifier: Assembly-CSharp::Entity.Player
   speed: 5
+  _Nickname:
+    _length: 0
+    _data:
+      Data: 00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
