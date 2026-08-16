@@ -11,20 +11,21 @@ using Utils;
 
 namespace UI
 {
-    public class Room : MonoBehaviour
+    public class RoomUI : MonoBehaviour
     {
         [SerializeField] private TMP_Text roomCode;
         [SerializeField] private Button leaveButton;
+        [SerializeField] private Button startButton;
         
         [SerializeField] private RectTransform uiContainer;
         [SerializeField] private NetworkObject playerCardPrefab;
         
-        private NetworkRunner _runner;
+        private SessionInfo _roomInfo;
         private readonly Dictionary<PlayerRef, NetworkObject> _players = new();
 
         private void Start()
         {
-            _runner = NetworkManager.Instance.CreateRunner();
+            _roomInfo = GameManager.Instance.RoomInfo;
     
             UpdateRoomCode();
         }
@@ -32,6 +33,7 @@ namespace UI
         private void OnEnable()
         {
             leaveButton.onClick.AddListener(HandleLeaveButton);
+            startButton.onClick.AddListener(HandleStartButton);
             
             GlobalEventHub.Instance.Network.OnPlayerJoinedEvent += AddPlayerUI;
             GlobalEventHub.Instance.Network.OnPlayerLeftEvent += RemovePlayerUI;
@@ -41,6 +43,7 @@ namespace UI
         private void OnDisable()
         {
             leaveButton.onClick.RemoveListener(HandleLeaveButton);
+            startButton.onClick.RemoveListener(HandleStartButton);
             
             GlobalEventHub.Instance.Network.OnPlayerJoinedEvent -= AddPlayerUI;
             GlobalEventHub.Instance.Network.OnPlayerLeftEvent -= RemovePlayerUI;
@@ -49,13 +52,13 @@ namespace UI
 
         private void UpdateRoomCode()
         {
-            if (_runner == null || _runner.SessionInfo == null) 
+            if (_roomInfo == null) 
             {
                 roomCode.text = "연결 중..."; // 또는 string.Empty
                 return;
             }
 
-            if (_runner.SessionInfo.Properties.TryGetValue(PrefKeys.RoomCode, out var prop))
+            if (_roomInfo.Properties.TryGetValue(PrefKeys.RoomCode, out var prop))
             {
                 roomCode.text = (string)prop; 
             }
@@ -77,6 +80,12 @@ namespace UI
         private async void HandleLeaveButton()
         {
             await NetworkManager.Instance.Connection.Shutdown();
+        }
+
+        private void HandleStartButton()
+        {
+            var sceneIndex = SceneName.GetIndex(SceneName.Game);
+            NetworkManager.Instance.Connection.LoadScene(sceneIndex);
         }
 
         private void LeaveScene(NetworkRunner runner, ShutdownReason shutdownReason)

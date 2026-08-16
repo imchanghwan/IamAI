@@ -12,6 +12,19 @@ namespace Network
     {
         private const int MaxRetries = 10;
 
+        public void LoadScene(int sceneIndex)
+        {
+            var runner = NetworkManager.Instance.Runner;
+
+            if (runner == null || !runner.IsRunning)
+                return;
+
+            if (!runner.IsServer)
+                return;
+
+            runner.LoadScene(SceneRef.FromIndex(sceneIndex));
+        }
+
         public async Task<StartGameResult> MatchQuick(int sceneIndex)
         {
             Debug.Log("[QuickJoin] 공개방 검색 중...");

@@ -23,12 +23,6 @@ namespace Network
             if (Runner != null && Runner.IsRunning)
                 return Runner;
             
-            if (runnerPrefab == null)
-            {
-                Debug.LogError("NetworkManager에 runnerPrefab이 할당되지 않았습니다!");
-                return null;
-            }
-            
             Runner = Instantiate(runnerPrefab);
             return Runner;
         }
