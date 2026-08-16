@@ -222,6 +222,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8254663291489292421}
   - component: {fileID: 8671735908519834514}
+  - component: {fileID: -1002579607548053150}
   m_Layer: 5
   m_Name: PlayerCard
   m_TagString: Untagged
@@ -247,7 +248,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 6.9061}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 251.6951, y: 259.1911}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &8671735908519834514
@@ -263,4 +264,28 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UI.PlayerCard
   playerImage: {fileID: 429790775325461715}
-  nickname: {fileID: 8751762819560259978}
+  nicknameText: {fileID: 8751762819560259978}
+  _Nickname:
+    _length: 0
+    _data:
+      Data: 00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+--- !u!114 &-1002579607548053150
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5706655553070482769}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1552182283, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Fusion.Runtime.dll::Fusion.NetworkObject
+  SortKey: 1509951959
+  SendPriority: 1
+  EnableInterpolation: 1
+  Flags: 262146
+  NestedObjects: []
+  NetworkedBehaviours:
+  - {fileID: 8671735908519834514}
+  ForceRemoteRenderTimeframe: 0

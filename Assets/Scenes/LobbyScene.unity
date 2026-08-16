@@ -503,7 +503,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 824986127}
-  - component: {fileID: 824986126}
+  - component: {fileID: 824986128}
   m_Layer: 0
   m_Name: NetworkManager
   m_TagString: Untagged
@@ -511,19 +511,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &824986126
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 824986125}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 18cb75ae872c16c4e9f887461d5d642c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: com.changhwan.FusionMultiplay::NetworkManager
-  runnerPrefab: {fileID: 759783405107991644, guid: e644d01b9d3e78542ac5fb2f222ba630, type: 3}
 --- !u!4 &824986127
 Transform:
   m_ObjectHideFlags: 0
@@ -539,6 +526,19 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &824986128
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 824986125}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d7cc99ef9fbd09c4e8501838d37cc522, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Network.NetworkManager
+  runnerPrefab: {fileID: 759783405107991644, guid: 6fbc5ea8215101b4bab658fbd4819c5a, type: 3}
 --- !u!1 &862566376
 GameObject:
   m_ObjectHideFlags: 0
@@ -652,7 +652,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1033720924}
   - component: {fileID: 1033720926}
-  - component: {fileID: 1033720925}
+  - component: {fileID: 1033720927}
   m_Layer: 5
   m_Name: Lobby
   m_TagString: Untagged
@@ -684,23 +684,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1033720925
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1033720923}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 904649f2e5aa983468e9eb5247f5b0df, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: com.changhwan.FusionMultiplay::com.changhwan.FusionMultiplay.Lobby
-  nicknameInput: {fileID: 1906936897}
-  roomCodeInput: {fileID: 1729984094}
-  quickMatchButton: {fileID: 2124307890}
-  createButton: {fileID: 300104345}
-  joinButton: {fileID: 1858311344}
 --- !u!222 &1033720926
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -709,6 +692,23 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1033720923}
   m_CullTransparentMesh: 1
+--- !u!114 &1033720927
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1033720923}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff3b915186cb59d418dc57e0b8c91f86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UI.Lobby
+  nicknameInput: {fileID: 1906936897}
+  roomCodeInput: {fileID: 1729984094}
+  quickMatchButton: {fileID: 2124307890}
+  createButton: {fileID: 300104345}
+  joinButton: {fileID: 1858311344}
 --- !u!1 &1088022741
 GameObject:
   m_ObjectHideFlags: 0

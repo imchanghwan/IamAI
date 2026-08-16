@@ -6,7 +6,7 @@ namespace Player
     public class PlayerNetworkData : NetworkBehaviour
     {
         [Networked] public NetworkString<_16> Nickname { get; private set; }
-
+        [Networked] public PlayerRef Player { get; set; }
         public override void Spawned()
         {
             if (HasInputAuthority)

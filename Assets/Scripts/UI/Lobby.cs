@@ -1,3 +1,4 @@
+using System;
 using Core;
 using Network;
 using TMPro;
@@ -18,6 +19,11 @@ namespace UI
 
         private string Nickname => nicknameInput.text;
         private string RoomCode => roomCodeInput.text;
+
+        private void Start()
+        {
+            nicknameInput.text = GameManager.Instance.LocalNickname;
+        }
 
         private void OnEnable()
         {

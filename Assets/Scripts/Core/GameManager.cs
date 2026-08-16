@@ -7,7 +7,15 @@ namespace Core
     {
         public string LocalNickname
         {
-            get => PlayerPrefs.GetString(PrefKeys.Nickname);
+            get
+            {
+                if (PlayerPrefs.HasKey(PrefKeys.Nickname))
+                {
+                    return PlayerPrefs.GetString(PrefKeys.Nickname);
+                }
+                
+                return string.Empty;
+            }
             set => PlayerPrefs.SetString(PrefKeys.Nickname, value);
         }
     }
