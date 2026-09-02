@@ -1,12 +1,12 @@
-
 using System;
 using System.Collections.Generic;
 using Fusion;
 using Fusion.Sockets;
+using Network;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-namespace Network
+namespace Old.Test.Network
 {
     public class GameLauncher : MonoBehaviour, INetworkRunnerCallbacks
     {

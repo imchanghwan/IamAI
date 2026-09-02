@@ -1,5 +1,4 @@
 using System.Threading.Tasks;
-using Event;
 using Fusion;
 using UnityEngine;
 
@@ -10,19 +9,12 @@ namespace Network
         [SerializeField] private NetworkRunner runnerPrefab;
         public NetworkRunner Runner { get; private set; }
         public NetworkSceneManagerDefault SceneManager { get; private set; }
-        public NetworkEvent Event { get; private set; }
-        
+        public NetworkEvents Events { get; private set; }
+
         protected override void Awake()
         {
             base.Awake();
-            Event = new NetworkEvent();
-        }
-
-        protected override void OnDestroy()
-        {
-            base.OnDestroy();
-            if (Runner != null)
-                Runner.RemoveCallbacks(Event);
+            Events = GetComponent<NetworkEvents>();
         }
 
         public NetworkRunner CreateRunner()
@@ -31,7 +23,6 @@ namespace Network
                 return Runner;
             
             Runner = Instantiate(runnerPrefab);
-            Runner.AddCallbacks(Event);
             return Runner;
         }
 
@@ -49,7 +40,6 @@ namespace Network
             if (Runner == null || !Runner.IsRunning) return;
             
             await Runner.Shutdown();
-            Runner.RemoveCallbacks(Event);
             Destroy(Runner);
             Runner = null;
         }

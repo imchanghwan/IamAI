@@ -1,6 +1,5 @@
 using System;
 using Core;
-using Game;
 using Network;
 using TMPro;
 using UnityEngine;

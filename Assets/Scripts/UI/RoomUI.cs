@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using Core;
-using Event;
 using Fusion;
 using Network;
 using TMPro;
@@ -22,11 +21,11 @@ namespace UI
         [SerializeField] private Button leaveButton;
         [SerializeField] private Button startButton;
         
-        private NetworkEvent _networkEvent;
+        private NetworkEvents _networkEvents;
 
         private void Awake()
         {
-            _networkEvent = NetworkManager.Instance.Event;
+            _networkEvents = NetworkManager.Instance.Events;
         }
 
         private void Start()
@@ -38,18 +37,20 @@ namespace UI
         {
             leaveButton.onClick.AddListener(OnLeaveButtonClick);
             startButton.onClick.AddListener(OnStartButtonClick);
-            _networkEvent.OnPlayerJoinedEvent += OnPlayerJoined;
-            _networkEvent.OnPlayerLeftEvent += OnPlayerLeft;
-            _networkEvent.OnShutdownEvent += OnShutDown;
+            
+            _networkEvents.PlayerJoined.AddListener(OnPlayerJoined);
+            _networkEvents.PlayerLeft.AddListener(OnPlayerLeft);
+            _networkEvents.OnShutdown.AddListener(OnShutDown);
         }
 
         private void OnDisable()
         {
             leaveButton.onClick.RemoveListener(OnLeaveButtonClick);
             startButton.onClick.RemoveListener(OnStartButtonClick);
-            _networkEvent.OnPlayerJoinedEvent -= OnPlayerJoined;
-            _networkEvent.OnPlayerLeftEvent -= OnPlayerLeft;
-            _networkEvent.OnShutdownEvent -= OnShutDown;
+            
+            _networkEvents.PlayerJoined.RemoveListener(OnPlayerJoined);
+            _networkEvents.PlayerLeft.RemoveListener(OnPlayerLeft);
+            _networkEvents.OnShutdown.RemoveListener(OnShutDown);
         }
 
         private void UpdateRoomCode()
