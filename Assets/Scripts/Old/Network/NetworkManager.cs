@@ -1,7 +1,8 @@
 using Fusion;
+using Network;
 using UnityEngine;
 
-namespace Network
+namespace Old.Network
 {
     public class NetworkManager : SingletonPersistent<NetworkManager>
     {

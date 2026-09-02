@@ -1,9 +1,9 @@
 using Fusion;
-using Network;
+using Old.Network;
 using UnityEngine;
 using Utils;
 
-namespace Core
+namespace Old.Core
 {
     public class RoomManager : SingletonPersistent<RoomManager>
     {

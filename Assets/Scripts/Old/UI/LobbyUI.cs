@@ -1,12 +1,12 @@
-using System;
 using Core;
-using Network;
+using Old.Core;
+using Old.Network;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using Utils;
 
-namespace UI
+namespace Old.UI
 {
     public class LobbyUI : MonoBehaviour
     {
@@ -49,7 +49,7 @@ namespace UI
             
             if (result is { Ok: true })
             {
-                string roomCode = RoomManager.Instance.RoomCode;
+                string roomCode = Old.Core.RoomManager.Instance.RoomCode;
                 Debug.Log($"[QuickJoin] 참가 성공! 방 코드: {roomCode}");
                 // UI 전환, 씬 로드 등
             }
@@ -71,8 +71,8 @@ namespace UI
             
             if (result is { Ok: true })
             {
-                string roomCode = RoomManager.Instance.RoomCode;
-                bool isPrivate = RoomManager.Instance.IsPrivate;
+                string roomCode = Old.Core.RoomManager.Instance.RoomCode;
+                bool isPrivate = Old.Core.RoomManager.Instance.IsPrivate;
                 
                 Debug.Log($"[{roomCode}] 방 생성 성공! ({(isPrivate ? "비공개" : "공개")})");
             }

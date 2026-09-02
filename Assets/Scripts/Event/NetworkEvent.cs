@@ -4,9 +4,9 @@ using Fusion;
 using Fusion.Sockets;
 using UnityEngine;
 
-namespace Old.EventDispatchers
+namespace Event
 {
-    public class NetworkEventDispatcher : MonoBehaviour, INetworkRunnerCallbacks
+    public class NetworkEvent : INetworkRunnerCallbacks
     {
         public event Action<NetworkRunner, PlayerRef> OnPlayerJoinedEvent;
         public event Action<NetworkRunner, PlayerRef> OnPlayerLeftEvent;
@@ -16,25 +16,6 @@ namespace Old.EventDispatchers
         public event Action<NetworkRunner, List<SessionInfo>> OnSessionListUpdatedEvent;
         public event Action<NetworkRunner, NetworkInput> OnInputEvent;
         public event Action<NetworkRunner> OnSceneLoadDoneEvent;
-
-        private NetworkRunner _runner;
-
-        /// <summary>
-        /// 외부에서 NetworkRunner를 주입받아 콜백을 등록하는 초기화 메서드
-        /// </summary>
-        public void Init(NetworkRunner runner)
-        {
-            _runner = runner;
-            _runner.AddCallbacks(this);
-        }
-
-        private void OnDestroy()
-        {
-            if (_runner != null)
-            {
-                _runner.RemoveCallbacks(this);
-            }
-        }
 
         public void OnPlayerJoined(NetworkRunner runner, PlayerRef player)
         {

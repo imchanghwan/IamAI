@@ -1,12 +1,11 @@
-using System;
 using System.Collections.Generic;
-using EventDispatchers;
+using Core;
 using Fusion;
 using Network;
+using Old.EventDispatchers;
 using UnityEngine;
-using Utils;
 
-namespace Core
+namespace Old.Core
 {
     public class GameManager : Singleton<GameManager>
     {

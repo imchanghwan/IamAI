@@ -5,16 +5,21 @@ using Fusion;
 using UnityEngine;
 using Utils;
 
-namespace Old.Network
+namespace Network
 {
-    public class NetworkConnection
+    public class SessionManager : SingletonPersistent<SessionManager>
     {
+        private SessionInfo RoomInfo => NetworkManager.Instance?.Runner?.SessionInfo;
+        
+        public string RoomCode => (string)RoomInfo?.Properties[PrefKeys.RoomCode];
+        public bool IsPrivate => (bool)RoomInfo?.Properties[PrefKeys.IsPrivate];
+        
         private const int MaxRetries = 10;
 
         public void LoadScene(int sceneIndex)
         {
             var runner = NetworkManager.Instance.Runner;
-
+            
             if (runner == null || !runner.IsRunning)
                 return;
 
@@ -30,10 +35,11 @@ namespace Old.Network
 
             var joinProps = new Dictionary<string, SessionProperty>
             {
-                { PrefKeys.IsPrivate, 0 }
+                { PrefKeys.IsPrivate, false }
             };
 
             var joinResult = await StartGame(GameMode.Client, string.Empty, sceneIndex, customProps: joinProps);
+            // var joinResult = await StartGame(GameMode.Client, string.Empty, sceneIndex);
 
             if (joinResult.Ok)
                 return joinResult;
@@ -51,8 +57,8 @@ namespace Old.Network
                     GameMode.Host, code, sceneIndex,
                     customProps: new Dictionary<string, SessionProperty>
                     {
-                        { PrefKeys.RoomCode,  code              },
-                        { PrefKeys.IsPrivate, isPrivate ? 1 : 0 }
+                        { PrefKeys.RoomCode,  code      },
+                        { PrefKeys.IsPrivate, isPrivate }
                     },
                     isVisible: !isPrivate);
 
@@ -76,57 +82,27 @@ namespace Old.Network
             return await StartGame(GameMode.Client, roomCode, sceneIndex);
         }
 
-        public async Task Shutdown()
-        {
-            var runner = NetworkManager.Instance.Runner;
-            if (runner == null || !runner.IsRunning) return;
-
-            await runner.Shutdown();
-            Debug.Log("세션 종료 완료.");
-            NetworkManager.Instance.ClearRunner();
-        }
-
         private async Task<StartGameResult> StartGame(
             GameMode gameMode, string sessionName, int sceneIndex,
             int maxPlayers = 8, Dictionary<string, SessionProperty> customProps = null,
             bool isVisible = true, bool isOpen = true)
         {
-            var runner = CreateAndInitRunner();
-            return await runner.StartGame(BuildArgs(
-                gameMode, sessionName, sceneIndex,
-                GetOrAddSceneManager(runner),
-                maxPlayers, customProps, isVisible, isOpen));
-        }
-
-        private StartGameArgs BuildArgs(
-            GameMode gameMode, string sessionName, int sceneIndex,
-            NetworkSceneManagerDefault sceneManager,
-            int maxPlayers = 8, Dictionary<string, SessionProperty> customProps = null,
-            bool isVisible = true, bool isOpen = true) => new StartGameArgs
-        {
-            GameMode          = gameMode,
-            SessionName       = sessionName,
-            Scene             = SceneRef.FromIndex(sceneIndex),
-            SceneManager      = sceneManager,
-            PlayerCount       = maxPlayers,
-            SessionProperties = customProps,
-            IsVisible         = isVisible,
-            IsOpen            = isOpen
-        };
-
-        private NetworkRunner CreateAndInitRunner()
-        {
             var runner = NetworkManager.Instance.CreateRunner();
             runner.ProvideInput = true;
-            GlobalEventHub.Instance.Network.Init(runner);
-            return runner;
-        }
 
-        private static NetworkSceneManagerDefault GetOrAddSceneManager(NetworkRunner runner)
-        {
-            if (!runner.gameObject.TryGetComponent(out NetworkSceneManagerDefault sm))
-                sm = runner.gameObject.AddComponent<NetworkSceneManagerDefault>();
-            return sm;
+            var sceneManager = NetworkManager.Instance.CreateSceneManager();
+            
+            return await runner.StartGame(new StartGameArgs
+            {
+                GameMode          = gameMode,
+                SessionName       = sessionName,
+                Scene          = SceneRef.FromIndex(sceneIndex),
+                SceneManager      = sceneManager,
+                PlayerCount       = maxPlayers,
+                SessionProperties = customProps,
+                IsVisible         = isVisible,
+                IsOpen            = isOpen
+            });
         }
     }
 }

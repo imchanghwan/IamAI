@@ -4,7 +4,7 @@ using Fusion;
 using Network;
 using UnityEngine;
 
-namespace Entity
+namespace Old.Entity
 {
     public class Player : NetworkBehaviour
     {

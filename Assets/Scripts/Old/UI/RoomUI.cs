@@ -1,15 +1,15 @@
-using System;
 using System.Collections.Generic;
 using Core;
 using Fusion;
-using Network;
+using Old.Core;
+using Old.Network;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using Utils;
 
-namespace UI
+namespace Old.UI
 {
     public class RoomUI : MonoBehaviour
     {
@@ -48,7 +48,7 @@ namespace UI
 
         private void UpdateRoomCode()
         {
-            roomCode.text = RoomManager.Instance.RoomCode;
+            roomCode.text = Old.Core.RoomManager.Instance.RoomCode;
         }
         
         private void AddPlayerUI(NetworkRunner runner, PlayerRef player)
