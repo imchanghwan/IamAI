@@ -23,22 +23,19 @@ namespace Network
             _players.Add(player, data);
         }
 
+        public void SetPlayer(PlayerRef player, PlayerData data)
+        {
+            _players[player] = data;
+        }
+
         public bool RemovePlayer(PlayerRef player)
         {
             return _players.Remove(player);
         }
 
-        public void LoadScene(int sceneIndex)
+        public PlayerData GetPlayer(PlayerRef player)
         {
-            var runner = NetworkManager.Instance.Runner;
-            
-            if (runner == null || !runner.IsRunning)
-                return;
-
-            if (!runner.IsServer)
-                return;
-
-            runner.LoadScene(SceneRef.FromIndex(sceneIndex));
+            return _players[player];
         }
 
         public async Task<StartGameResult> MatchQuick(int sceneIndex)

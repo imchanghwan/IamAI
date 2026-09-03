@@ -5,8 +5,8 @@ using Utils;
 
 namespace Player
 {
-    public class PlayerNetworkData
+    public struct PlayerNetworkData : INetworkStruct
     {
-        public string Nickname { get; set; }
+        [Networked] public NetworkString<_32> Nickname { get; private set; }
     }
 }
