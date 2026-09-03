@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Core;
 using Fusion;
+using Player;
 using UnityEngine;
 using Utils;
 
@@ -15,6 +15,18 @@ namespace Network
         public bool IsPrivate => (bool)RoomInfo?.Properties[PrefKeys.IsPrivate];
         
         private const int MaxRetries = 10;
+
+        private readonly Dictionary<PlayerRef, PlayerData> _players = new();
+
+        public void AddPlayer(PlayerRef player, PlayerData data)
+        {
+            _players.Add(player, data);
+        }
+
+        public bool RemovePlayer(PlayerRef player)
+        {
+            return _players.Remove(player);
+        }
 
         public void LoadScene(int sceneIndex)
         {

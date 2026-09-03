@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
-using Core;
 using Fusion;
 using Network;
+using Player;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -78,16 +78,19 @@ namespace UI
 
         private void OnPlayerJoined(NetworkRunner runner, PlayerRef player)
         {
-            Debug.Log("On Player Joined");
             // Host만 Spawn
             if (!runner.IsServer) return;
             var obj = runner.Spawn(playerDataPrefab, inputAuthority: player);
             runner.SetPlayerObject(player, obj);
+
+            var nickname = GameManager.Instance.Nickname;
+            SessionManager.Instance.AddPlayer(player, new PlayerData(nickname));
         }
 
         private void OnPlayerLeft(NetworkRunner runner, PlayerRef player)
         {
             if (!runner.TryGetPlayerObject(player, out var obj)) return;
+            SessionManager.Instance.RemovePlayer(player);
             runner.Despawn(obj);
         }
 

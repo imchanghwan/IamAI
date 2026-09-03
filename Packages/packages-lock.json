@@ -1,13 +1,5 @@
 {
   "dependencies": {
-    "com.imchanghong15.fusionmultiplay": {
-      "version": "file:com.imchanghong15.fusionmultiplay",
-      "depth": 0,
-      "source": "embedded",
-      "dependencies": {
-        "com.unity.test-framework": "1.6.0"
-      }
-    },
     "com.unity.2d.animation": {
       "version": "15.1.0",
       "depth": 0,
