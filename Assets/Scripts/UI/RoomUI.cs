@@ -78,11 +78,11 @@ namespace UI
 
         private void OnPlayerJoined(NetworkRunner runner, PlayerRef player)
         {
+            Debug.Log("On Player Joined");
             // Host만 Spawn
             if (!runner.IsServer) return;
             var obj = runner.Spawn(playerDataPrefab, inputAuthority: player);
             runner.SetPlayerObject(player, obj);
-
         }
 
         private void OnPlayerLeft(NetworkRunner runner, PlayerRef player)

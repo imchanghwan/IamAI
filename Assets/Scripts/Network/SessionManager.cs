@@ -90,7 +90,7 @@ namespace Network
             var runner = NetworkManager.Instance.CreateRunner();
             runner.ProvideInput = true;
 
-            var sceneManager = NetworkManager.Instance.CreateSceneManager();
+            var sceneManager = NetworkManager.Instance.SceneManager;
             
             return await runner.StartGame(new StartGameArgs
             {

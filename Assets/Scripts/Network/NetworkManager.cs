@@ -7,14 +7,16 @@ namespace Network
     public class NetworkManager : SingletonPersistent<NetworkManager>
     {
         [SerializeField] private NetworkRunner runnerPrefab;
+        [SerializeField] private NetworkEvents eventsPrefab;
         public NetworkRunner Runner { get; private set; }
-        public NetworkSceneManagerDefault SceneManager { get; private set; }
         public NetworkEvents Events { get; private set; }
+        public NetworkSceneManagerDefault SceneManager { get; private set; }
 
         protected override void Awake()
         {
             base.Awake();
-            Events = GetComponent<NetworkEvents>();
+            SceneManager = GetComponent<NetworkSceneManagerDefault>();
+            Events = CreateEvents();
         }
 
         public NetworkRunner CreateRunner()
@@ -22,34 +24,24 @@ namespace Network
             if (Runner != null && Runner.IsRunning)
                 return Runner;
             
-            Runner = Instantiate(runnerPrefab);
+            Runner = Instantiate(runnerPrefab, transform);
+            Runner.AddCallbacks(Events);
             return Runner;
-        }
-
-        public NetworkSceneManagerDefault CreateSceneManager()
-        {
-            if (SceneManager != null)
-                return SceneManager;
-            
-            SceneManager = gameObject.AddComponent<NetworkSceneManagerDefault>();
-            return SceneManager;
         }
 
         public async Task RemoveRunner()
         {
             if (Runner == null || !Runner.IsRunning) return;
-            
             await Runner.Shutdown();
             Destroy(Runner);
             Runner = null;
         }
 
-        public void RemoveSceneManager()
+        private NetworkEvents CreateEvents()
         {
-            if (SceneManager == null) return;
-            
-            Destroy(SceneManager);
-            SceneManager = null;
+            if (Events != null) return Events;
+            Events = Instantiate(eventsPrefab, transform);
+            return Events;
         }
     }
 }
