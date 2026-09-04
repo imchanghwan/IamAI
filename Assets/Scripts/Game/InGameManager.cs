@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Fusion;
+using Input;
 using Network;
 using UnityEngine;
 
@@ -23,7 +24,6 @@ namespace Game
         private void OnEnable()
         {
             _networkEvents.OnSceneLoadDone.AddListener(OnSceneLoadDone);
-            _networkEvents.OnInput.AddListener(OnInput);
             _networkEvents.PlayerLeft.AddListener(OnPlayerLeft);
         }
 
@@ -39,31 +39,26 @@ namespace Game
                 SpawnAllPlayers(runner);
             }
         }
-
-        private void SpawnAllPlayers(NetworkRunner runner)
-        {
-            foreach (var player in runner.ActivePlayers)
-            {
-                _players[player] = 
-                    runner.Spawn(playerPrefab, Vector3.zero, Quaternion.identity, player);
-            }
-        }
-
-        private void OnInput(NetworkRunner runner, NetworkInput input)
-        {
-            input.Set(new NetworkInputData
-            {
-                MoveDirection = new Vector2(
-                    Input.GetAxisRaw("Horizontal"),
-                    Input.GetAxisRaw("Vertical")
-                ).normalized
-            });
-        }
-
+        
         private void OnPlayerLeft(NetworkRunner runner, PlayerRef player)
         {
             if (_players.Remove(player, out var obj))
                 runner.Despawn(obj);
         }
+
+        private void SpawnAllPlayers(NetworkRunner runner)
+        {
+            foreach (var player in runner.ActivePlayers)
+            {
+                SpawnPlayer(runner, player);
+            }
+        }
+
+        private void SpawnPlayer(NetworkRunner runner, PlayerRef player)
+        {
+            _players[player] = 
+                runner.Spawn(playerPrefab, Vector3.zero, Quaternion.identity, player);
+        }
+        
     }
 }

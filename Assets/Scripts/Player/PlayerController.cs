@@ -1,6 +1,7 @@
 using Fusion;
 using Network;
 using Camera;
+using Input;
 using UnityEngine;
 
 namespace Player
