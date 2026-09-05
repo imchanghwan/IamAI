@@ -10,10 +10,10 @@ GameObject:
   m_Component:
   - component: {fileID: 6112186625870338375}
   - component: {fileID: 7390876047719348670}
-  - component: {fileID: 2567174680453864535}
-  - component: {fileID: 6992287493405524283}
+  - component: {fileID: 4316495793132682439}
+  - component: {fileID: 7122748800872919537}
   - component: {fileID: 8291368597175052867}
-  - component: {fileID: 7860356747536777808}
+  - component: {fileID: 3959065552984890107}
   - component: {fileID: -2011415573241427010}
   m_Layer: 0
   m_Name: Player
@@ -97,7 +97,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
   m_BlendShapeWeights: []
---- !u!50 &2567174680453864535
+--- !u!50 &4316495793132682439
 Rigidbody2D:
   serializedVersion: 5
   m_ObjectHideFlags: 0
@@ -123,8 +123,8 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 4
---- !u!58 &6992287493405524283
+  m_Constraints: 0
+--- !u!58 &7122748800872919537
 CircleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -178,10 +178,10 @@ MonoBehaviour:
   Flags: 262402
   NestedObjects: []
   NetworkedBehaviours:
-  - {fileID: 7860356747536777808}
+  - {fileID: 3959065552984890107}
   - {fileID: -2011415573241427010}
   ForceRemoteRenderTimeframe: 0
---- !u!114 &7860356747536777808
+--- !u!114 &3959065552984890107
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
