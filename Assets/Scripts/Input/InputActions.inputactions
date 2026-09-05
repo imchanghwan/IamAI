@@ -3,7 +3,7 @@
     "name": "InputActions",
     "maps": [
         {
-            "name": "PC",
+            "name": "Player",
             "id": "f687e23c-3e95-4b9e-bfcc-373e66a3c8f3",
             "actions": [
                 {
