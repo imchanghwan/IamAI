@@ -37,6 +37,11 @@ namespace Input
             };
         }
 
+        public void OnPause(InputAction.CallbackContext context)
+        {
+            throw new System.NotImplementedException();
+        }
+
         private void OnInput(NetworkRunner runner, NetworkInput input)
         {
             input.Set(_inputData);
