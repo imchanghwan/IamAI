@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "com.photonengine.fusion-physics": "https://github.com/Photon-Server/Photon-UPM.git#fusion/v2/fusion-physics",
     "com.unity.2d.animation": "15.1.0",
     "com.unity.2d.aseprite": "5.0.3",
     "com.unity.2d.psdimporter": "14.0.3",

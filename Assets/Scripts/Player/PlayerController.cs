@@ -24,7 +24,11 @@ namespace Player
         {
             if (GetInput(out NetworkInputData input))
             {
-                _rb.MovePosition(_rb.position + input.MoveDirection * speed * Runner.DeltaTime);
+                _rb.linearVelocity = input.MoveDirection * speed;
+            }
+            else
+            {
+                _rb.linearVelocity = Vector2.zero;
             }
         }
     }
