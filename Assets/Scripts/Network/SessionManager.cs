@@ -14,7 +14,7 @@ namespace Network
         
         private SessionInfo RoomInfo => NetworkManager.Instance?.Runner?.SessionInfo;
         
-        private readonly Dictionary<PlayerRef, PlayerData> _players = new();
+        private readonly Dictionary<PlayerRef, PlayerNetworkData> _players = new();
 
         private const int MaxRetries = 10;
         
@@ -94,12 +94,12 @@ namespace Network
             });
         }
         
-        public void AddPlayer(PlayerRef player, PlayerData data)
+        public void AddPlayer(PlayerRef player, PlayerNetworkData data)
         {
             _players.TryAdd(player, data);
         }
 
-        public void SetPlayer(PlayerRef player, PlayerData data)
+        public void SetPlayer(PlayerRef player, PlayerNetworkData data)
         {
             _players[player] = data;
         }
@@ -109,12 +109,12 @@ namespace Network
             _players.Remove(player);
         }
 
-        public bool RemovePlayer(PlayerRef player, out PlayerData data)
+        public bool RemovePlayer(PlayerRef player, out PlayerNetworkData data)
         {
             return _players.Remove(player, out data);
         }
 
-        public bool GetPlayer(PlayerRef player, out PlayerData data)
+        public bool GetPlayer(PlayerRef player, out PlayerNetworkData data)
         {
             return _players.TryGetValue(player, out data);
         }

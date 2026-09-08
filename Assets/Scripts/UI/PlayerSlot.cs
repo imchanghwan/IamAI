@@ -1,3 +1,5 @@
+using Fusion;
+using Network;
 using Player;
 using TMPro;
 using UnityEngine;
@@ -8,7 +10,7 @@ namespace UI
     {
         [Header("UI")]
         [SerializeField] private TMP_Text nicknameText;
-
+        
         public void SetNicknameText(string nickname)
         {
             nicknameText.text = nickname;

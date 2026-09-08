@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Fusion;
 using Input;
 using Network;
+using Player;
 using UnityEngine;
 
 namespace Game
@@ -29,11 +30,18 @@ namespace Game
         private void OnDisable()
         {
             _networkEvents.OnSceneLoadDone.RemoveListener(OnSceneLoadDone);
+            _networkEvents.PlayerLeft.RemoveListener(OnPlayerLeft);
         }
 
         private void OnSceneLoadDone(NetworkRunner runner)
         {
             SpawnAllPlayers(runner);
+        }
+
+        private void OnPlayerJoin(NetworkRunner runner, PlayerRef player)
+        {
+            SpawnPlayer(runner, player);
+            // SessionManager.Instance.AddPlayer(player, new PlayerData(player, ));
         }
         
         private void OnPlayerLeft(NetworkRunner runner, PlayerRef player)

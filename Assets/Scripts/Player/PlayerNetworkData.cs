@@ -5,8 +5,22 @@ using Utils;
 
 namespace Player
 {
-    public struct PlayerNetworkData : INetworkStruct
+    public class PlayerNetworkData : NetworkBehaviour
     {
-        [Networked] public NetworkString<_32> Nickname { get; private set; }
+        public NetworkString<_32> Nickname { get; private set; }
+    
+        public override void Spawned()
+        {
+            if (!HasInputAuthority) return;
+            
+            string savedNickname = GameManager.Instance.Nickname;
+            RPC_SetNickname(savedNickname);
+        }
+
+        [Rpc(RpcSources.InputAuthority, RpcTargets.StateAuthority)]
+        private void RPC_SetNickname(string nickname)
+        {
+            Nickname = nickname;
+        }
     }
 }

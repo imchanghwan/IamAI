@@ -1,6 +1,7 @@
 using Fusion;
 using Game;
 using Network;
+using Room;
 using UnityEngine;
 
 namespace Player

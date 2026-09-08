@@ -1,11 +1,10 @@
 using System.Collections.Generic;
 using Fusion;
 using Network;
-using Player;
 using UI;
 using UnityEngine;
 
-namespace Game
+namespace Room
 {
     public class RoomManager : Singleton<RoomManager>
     {
@@ -17,7 +16,8 @@ namespace Game
         public void AddSlotUI(PlayerRef player, string nickname)
         {
             var slot =  Instantiate(slotPrefab, slotContainer);
-            _slots.Add(player, slot);
+            _slots.TryAdd(player, slot);
+            
             slot.SetNicknameText(nickname);
         }
 
