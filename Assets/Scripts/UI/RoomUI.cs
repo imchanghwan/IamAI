@@ -4,6 +4,7 @@ using Fusion;
 using Network;
 using Photon.Client.StructWrapping;
 using Player;
+using Room;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -19,9 +20,16 @@ namespace UI
         [SerializeField] private Button leaveButton;
         [SerializeField] private Button startButton;
         
+        private NetworkRunner _runner;
+
+        private void Awake()
+        {
+            _runner = NetworkManager.Instance.Runner;
+        }
+
         private void Start()
         {
-            UpdateRoomCode();
+            roomCode.text = SessionManager.Instance.RoomCode;
         }
 
         private void OnEnable()
@@ -35,28 +43,19 @@ namespace UI
             leaveButton.onClick.RemoveListener(OnLeaveButtonClick);
             startButton.onClick.RemoveListener(OnStartButtonClick);
         }
-
-        private void UpdateRoomCode()
-        {
-            roomCode.text = SessionManager.Instance.RoomCode;
-        }
         
         private async void OnLeaveButtonClick()
         {
-            var runner = NetworkManager.Instance.Runner;
-            if (runner == null || !runner.IsRunning) return;
-            
             await NetworkManager.Instance.RemoveRunner();
         }
 
         private void OnStartButtonClick()
         {
             var sceneIndex = SceneName.GetIndex(SceneName.Game);
-            var runner = NetworkManager.Instance.Runner;
             
-            if (!runner.IsServer) return;
+            if (!_runner.IsServer) return;
             
-            runner.LoadScene(SceneRef.FromIndex(sceneIndex));
+            _runner.LoadScene(SceneRef.FromIndex(sceneIndex));
         }
     }
 }

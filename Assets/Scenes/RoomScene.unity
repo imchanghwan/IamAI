@@ -514,7 +514,7 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
---- !u!1 &911689094
+--- !u!1 &695873213
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -522,35 +522,35 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 911689096}
-  - component: {fileID: 911689095}
+  - component: {fileID: 695873215}
+  - component: {fileID: 695873214}
   m_Layer: 0
-  m_Name: RoomPlayerManager
+  m_Name: PlayerSlotSpawner
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &911689095
+--- !u!114 &695873214
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 911689094}
+  m_GameObject: {fileID: 695873213}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7811c6b908bc4f4c8736beaccf2cef3e, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Room.RoomPlayerManager
-  playerNetworkSlot: {fileID: 4507377138002578951, guid: a260a21c9d33d4e4597e60379b352db6, type: 3}
---- !u!4 &911689096
+  m_EditorClassIdentifier: Assembly-CSharp::Room.PlayerSlotSpawner
+  playerNetworkData: {fileID: 167328273812926699, guid: 42eb1842eafcbc44abaedaf70516d692, type: 3}
+--- !u!4 &695873215
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 911689094}
+  m_GameObject: {fileID: 695873213}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
@@ -1753,4 +1753,4 @@ SceneRoots:
   - {fileID: 1784573497}
   - {fileID: 1938739348}
   - {fileID: 1763445840}
-  - {fileID: 911689096}
+  - {fileID: 695873215}

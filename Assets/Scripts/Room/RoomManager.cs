@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Fusion;
 using Network;
+using Player;
 using UI;
 using UnityEngine;
 
@@ -12,12 +13,14 @@ namespace Room
         [SerializeField] private Transform slotContainer;
     
         private readonly Dictionary<PlayerRef, PlayerSlot> _slots = new();
-
+        
         public void AddSlotUI(PlayerRef player, string nickname)
         {
-            var slot =  Instantiate(slotPrefab, slotContainer);
-            _slots.TryAdd(player, slot);
-            
+            if (_slots.ContainsKey(player))
+                return;
+            var slot = Instantiate(slotPrefab, slotContainer);
+            _slots.Add(player, slot);
+            Debug.Log($"Adding slot {nickname}");
             slot.SetNicknameText(nickname);
         }
 

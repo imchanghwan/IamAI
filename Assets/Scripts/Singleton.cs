@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public abstract class StaticInstance<T> : MonoBehaviour where T : MonoBehaviour
+public abstract class Singleton<T> : MonoBehaviour where T : MonoBehaviour
 {
     private static T _instance;
 
@@ -9,30 +9,23 @@ public abstract class StaticInstance<T> : MonoBehaviour where T : MonoBehaviour
         get
         {
             if (_instance != null) return _instance;
-            
             _instance = FindAnyObjectByType<T>();
-            if (_instance != null) return _instance;
-            
-            var objects = Resources.FindObjectsOfTypeAll<T>();
-            foreach (var obj in objects)
-            {
-                if (obj.gameObject.scene.name != "DontDestroyOnLoad") continue;
-                
-                _instance = obj;
-                break;
-            }
             return _instance;
         }
         private set => _instance = value;
     }
 
-    protected virtual void Awake() => Instance = this as T;
-
-    protected virtual void OnApplicationQuit()
+    protected virtual void Awake()
     {
-        Instance = null;
-        Destroy(gameObject);
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+        Instance = this as T;
     }
+
+    protected virtual void OnApplicationQuit() => Instance = null;
 
     protected virtual void OnDestroy()
     {
@@ -40,29 +33,12 @@ public abstract class StaticInstance<T> : MonoBehaviour where T : MonoBehaviour
     }
 }
 
-public abstract class Singleton<T> : StaticInstance<T> where T : MonoBehaviour
-{
-    protected override void Awake()
-    {
-        if (Instance != null && Instance != this)
-        {
-            Destroy(gameObject);
-            return;
-        }
-        base.Awake();
-    }
-}
-
 public abstract class SingletonPersistent<T> : Singleton<T> where T : MonoBehaviour
 {
     protected override void Awake()
     {
-        if (Instance != null && Instance != this)
-        {
-            Destroy(gameObject);
-            return;
-        }
-        DontDestroyOnLoad(gameObject);
         base.Awake();
+        if (Instance == this)
+            DontDestroyOnLoad(gameObject);
     }
 }

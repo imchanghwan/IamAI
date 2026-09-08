@@ -13,8 +13,6 @@ namespace Network
         public bool IsPrivate => (bool)RoomInfo?.Properties[PrefKeys.IsPrivate];
         
         private SessionInfo RoomInfo => NetworkManager.Instance?.Runner?.SessionInfo;
-        
-        private readonly Dictionary<PlayerRef, PlayerNetworkData> _players = new();
 
         private const int MaxRetries = 10;
         
@@ -93,31 +91,5 @@ namespace Network
                 IsOpen            = isOpen
             });
         }
-        
-        public void AddPlayer(PlayerRef player, PlayerNetworkData data)
-        {
-            _players.TryAdd(player, data);
-        }
-
-        public void SetPlayer(PlayerRef player, PlayerNetworkData data)
-        {
-            _players[player] = data;
-        }
-
-        public void RemovePlayer(PlayerRef player)
-        {
-            _players.Remove(player);
-        }
-
-        public bool RemovePlayer(PlayerRef player, out PlayerNetworkData data)
-        {
-            return _players.Remove(player, out data);
-        }
-
-        public bool GetPlayer(PlayerRef player, out PlayerNetworkData data)
-        {
-            return _players.TryGetValue(player, out data);
-        }
-
     }
 }

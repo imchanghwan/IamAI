@@ -1,13 +1,13 @@
 using Fusion;
 using Network;
+using Player;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.Serialization;
 using Utils;
 
 namespace Room
 {
-    public class PlayerSlotSpawner : MonoBehaviour
+    public class PlayerDataSpawner : MonoBehaviour
     {
         [Header("Network")]
         [SerializeField] private NetworkObject playerNetworkData;
@@ -37,13 +37,19 @@ namespace Room
             if (!runner.IsServer) return;
             var obj = runner.Spawn(playerNetworkData, inputAuthority: player);
             runner.SetPlayerObject(player, obj);
+
+            // var networkData = obj.GetComponent<PlayerNetworkData>();
+            // PlayerDataManager.Instance.AddPlayer(player, networkData);
+            // RoomManager.Instance.AddSlotUI(player, networkData.Nickname.Value);
         }
 
         private void OnPlayerLeft(NetworkRunner runner, PlayerRef player)
         {
             if (!runner.TryGetPlayerObject(player, out var obj)) return;
-            SessionManager.Instance.RemovePlayer(player);
             runner.Despawn(obj);
+            
+            PlayerDataManager.Instance.RemovePlayer(player);
+            RoomManager.Instance.RemoveSlotUI(player);
         }
 
         private void OnShutDown(NetworkRunner runner, ShutdownReason shutdownReason)

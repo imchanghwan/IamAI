@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &4838983493113544737
+--- !u!1 &5700831899626191122
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,23 +8,23 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 7924189959192634896}
-  - component: {fileID: 4507377138002578951}
-  - component: {fileID: 7263116316066875300}
+  - component: {fileID: 4294125840363198026}
+  - component: {fileID: 167328273812926699}
+  - component: {fileID: 8320064939165605422}
   m_Layer: 0
-  m_Name: PlayerNetworkSlot
+  m_Name: PlayerNetworkData
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &7924189959192634896
+--- !u!4 &4294125840363198026
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4838983493113544737}
+  m_GameObject: {fileID: 5700831899626191122}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
@@ -33,38 +33,38 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4507377138002578951
+--- !u!114 &167328273812926699
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4838983493113544737}
+  m_GameObject: {fileID: 5700831899626191122}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: -1552182283, guid: e725a070cec140c4caffb81624c8c787, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Fusion.Runtime.dll::Fusion.NetworkObject
-  SortKey: 144293152
+  SortKey: 2954588854
   SendPriority: 1
   EnableInterpolation: 1
   Flags: 262146
   NestedObjects: []
   NetworkedBehaviours:
-  - {fileID: 7263116316066875300}
+  - {fileID: 8320064939165605422}
   ForceRemoteRenderTimeframe: 0
---- !u!114 &7263116316066875300
+--- !u!114 &8320064939165605422
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4838983493113544737}
+  m_GameObject: {fileID: 5700831899626191122}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b6ad5dca6e2e4cf29c0859a2a202402e, type: 3}
+  m_Script: {fileID: 11500000, guid: 4c53036eaa4b340488f3a209dffc5d9a, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Player.PlayerNetworkSlot
+  m_EditorClassIdentifier: Assembly-CSharp::Player.PlayerNetworkData
   _Nickname:
     _length: 0
     _data:
