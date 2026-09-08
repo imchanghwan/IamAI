@@ -1,5 +1,4 @@
-using Fusion;
-using Network;
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -7,17 +6,16 @@ namespace Input
 {
     public class InGameInputManager : Singleton<InGameInputManager>, InputActions.IPlayerActions
     {
-        private NetworkEvents _networkEvents;
+        public NetworkInputData InputData { get; private set; }
+        public bool Paused { get; private set; }
+
+        public event Action<bool> OnPauseChanged;
+
         private InputActions _actions;
-        
-        private NetworkInputData _inputData;
 
         private void OnEnable()
         {
-            _networkEvents = NetworkManager.Instance.Events;
             _actions ??= new InputActions();
-
-            _networkEvents.OnInput.AddListener(OnInput);
 
             _actions.Player.SetCallbacks(this);
             _actions.Player.Enable();
@@ -31,7 +29,7 @@ namespace Input
 
         public void OnMove(InputAction.CallbackContext context)
         {
-            _inputData = new NetworkInputData
+            InputData = new NetworkInputData
             {
                 MoveDirection = context.ReadValue<Vector2>()
             };
@@ -39,12 +37,11 @@ namespace Input
 
         public void OnPause(InputAction.CallbackContext context)
         {
-            throw new System.NotImplementedException();
-        }
+            if (!context.performed)
+                return;
 
-        private void OnInput(NetworkRunner runner, NetworkInput input)
-        {
-            input.Set(_inputData);
+            Paused = !Paused;
+            OnPauseChanged?.Invoke(Paused);
         }
     }
 }

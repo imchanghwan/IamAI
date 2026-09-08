@@ -9,7 +9,6 @@ namespace Game
 {
     public class InGameManager : Singleton<InGameManager>
     {
-        
         [SerializeField] private NetworkObject playerPrefab;
         private readonly Dictionary<PlayerRef, NetworkObject> _players = new();
         
@@ -34,16 +33,14 @@ namespace Game
 
         private void OnSceneLoadDone(NetworkRunner runner)
         {
-            if (runner.IsServer)
-            {
-                SpawnAllPlayers(runner);
-            }
+            SpawnAllPlayers(runner);
         }
         
         private void OnPlayerLeft(NetworkRunner runner, PlayerRef player)
         {
-            if (_players.Remove(player, out var obj))
-                runner.Despawn(obj);
+            if (!_players.Remove(player, out var obj)) return;
+            SessionManager.Instance.RemovePlayer(player);
+            runner.Despawn(obj);
         }
 
         private void SpawnAllPlayers(NetworkRunner runner)
@@ -56,8 +53,11 @@ namespace Game
 
         private void SpawnPlayer(NetworkRunner runner, PlayerRef player)
         {
-            _players[player] = 
+            if (!runner.IsServer) return;
+            var obj = 
                 runner.Spawn(playerPrefab, Vector3.zero, Quaternion.identity, player);
+            _players.TryAdd(player, obj);
+            runner.SetPlayerObject(player, obj);
         }
         
     }

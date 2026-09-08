@@ -88,7 +88,7 @@ namespace UI
         private void OnPlayerLeft(NetworkRunner runner, PlayerRef player)
         {
             if (!runner.TryGetPlayerObject(player, out var obj)) return;
-            if (!SessionManager.Instance.RemovePlayer(player)) return;
+            SessionManager.Instance.RemovePlayer(player);
             runner.Despawn(obj);
         }
 

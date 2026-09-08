@@ -9,35 +9,15 @@ namespace Network
 {
     public class SessionManager : SingletonPersistent<SessionManager>
     {
-        private SessionInfo RoomInfo => NetworkManager.Instance?.Runner?.SessionInfo;
-        
         public string RoomCode => (string)RoomInfo?.Properties[PrefKeys.RoomCode];
         public bool IsPrivate => (bool)RoomInfo?.Properties[PrefKeys.IsPrivate];
         
-        private const int MaxRetries = 10;
-
+        private SessionInfo RoomInfo => NetworkManager.Instance?.Runner?.SessionInfo;
+        
         private readonly Dictionary<PlayerRef, PlayerData> _players = new();
 
-        public void AddPlayer(PlayerRef player, PlayerData data)
-        {
-            _players.Add(player, data);
-        }
-
-        public void SetPlayer(PlayerRef player, PlayerData data)
-        {
-            _players[player] = data;
-        }
-
-        public bool RemovePlayer(PlayerRef player)
-        {
-            return _players.Remove(player);
-        }
-
-        public PlayerData GetPlayer(PlayerRef player)
-        {
-            return _players[player];
-        }
-
+        private const int MaxRetries = 10;
+        
         public async Task<StartGameResult> MatchQuick(int sceneIndex)
         {
             Debug.Log("[QuickJoin] 공개방 검색 중...");
@@ -113,5 +93,31 @@ namespace Network
                 IsOpen            = isOpen
             });
         }
+        
+        public void AddPlayer(PlayerRef player, PlayerData data)
+        {
+            _players.TryAdd(player, data);
+        }
+
+        public void SetPlayer(PlayerRef player, PlayerData data)
+        {
+            _players[player] = data;
+        }
+
+        public void RemovePlayer(PlayerRef player)
+        {
+            _players.Remove(player);
+        }
+
+        public bool RemovePlayer(PlayerRef player, out PlayerData data)
+        {
+            return _players.Remove(player, out data);
+        }
+
+        public bool GetPlayer(PlayerRef player, out PlayerData data)
+        {
+            return _players.TryGetValue(player, out data);
+        }
+
     }
 }
