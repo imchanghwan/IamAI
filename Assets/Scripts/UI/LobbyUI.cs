@@ -1,4 +1,3 @@
-using System;
 using Network;
 using TMPro;
 using UnityEngine;
@@ -15,7 +14,7 @@ namespace UI
         [SerializeField] private TMP_InputField roomCodeInputField;
         [SerializeField] private Button joinButton;
         
-        private string Nickname
+        private string NicknameText
         {
             get => nicknameInputField.text;
             set => nicknameInputField.text = value;
@@ -25,7 +24,7 @@ namespace UI
 
         private void Start()
         {
-            Nickname = PlayerPrefs.GetString(PrefKeys.Nickname, string.Empty);
+            NicknameText = PlayerPrefs.GetString(PrefKeys.Nickname, string.Empty);
         }
 
         private void OnEnable()
@@ -45,7 +44,7 @@ namespace UI
         private async void OnQuickMatchButtonClick()
         {
             SetUIInteractable(false);
-            GameManager.Instance.Nickname = Nickname;
+            GameManager.Instance.Nickname = NicknameText;
             int sceneIndex = SceneName.GetIndex(SceneName.Room);
             var result = await SessionManager.Instance.MatchQuick(sceneIndex);
             
@@ -66,7 +65,7 @@ namespace UI
         private async void OnCreateButtonClick()
         {
             SetUIInteractable(false);
-            GameManager.Instance.Nickname = Nickname;
+            GameManager.Instance.Nickname = NicknameText;
             int sceneIndex = SceneName.GetIndex(SceneName.Room);
             var result = await SessionManager.Instance.CreateRoom(sceneIndex);
             
@@ -87,7 +86,7 @@ namespace UI
         private async void OnJoinButtonClick()
         {
             SetUIInteractable(false);
-            GameManager.Instance.Nickname = Nickname;
+            GameManager.Instance.Nickname = NicknameText;
             int sceneIndex = SceneName.GetIndex(SceneName.Room);
             var result = await SessionManager.Instance.JoinRoom(RoomCode, sceneIndex);
 

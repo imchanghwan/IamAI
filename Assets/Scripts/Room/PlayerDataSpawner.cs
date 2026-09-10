@@ -1,6 +1,5 @@
 using Fusion;
 using Network;
-using Player;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Utils;
@@ -37,19 +36,13 @@ namespace Room
             if (!runner.IsServer) return;
             var obj = runner.Spawn(playerNetworkData, inputAuthority: player);
             runner.SetPlayerObject(player, obj);
-
-            // var networkData = obj.GetComponent<PlayerNetworkData>();
-            // PlayerDataManager.Instance.AddPlayer(player, networkData);
-            // RoomManager.Instance.AddSlotUI(player, networkData.Nickname.Value);
         }
 
         private void OnPlayerLeft(NetworkRunner runner, PlayerRef player)
         {
+            if (!runner.IsServer) return; // ← 추가: Host만 Despawn
             if (!runner.TryGetPlayerObject(player, out var obj)) return;
-            runner.Despawn(obj);
-            
-            PlayerDataManager.Instance.RemovePlayer(player);
-            RoomManager.Instance.RemoveSlotUI(player);
+            runner.Despawn(obj); // Despawned()가 RemovePlayer/RemoveSlotUI 처리
         }
 
         private void OnShutDown(NetworkRunner runner, ShutdownReason shutdownReason)

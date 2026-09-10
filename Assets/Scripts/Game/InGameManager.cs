@@ -47,7 +47,7 @@ namespace Game
         private void OnPlayerLeft(NetworkRunner runner, PlayerRef player)
         {
             if (!_players.Remove(player, out var obj)) return;
-            PlayerDataManager.Instance.RemovePlayer(player);
+            PlayerDataManager.Instance.Remove(player);
             runner.Despawn(obj);
         }
 

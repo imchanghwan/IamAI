@@ -7,32 +7,34 @@ namespace Player
     {
         private readonly Dictionary<PlayerRef, PlayerNetworkData> _players = new();
 
-        public void AddPlayer(PlayerRef player, PlayerNetworkData data)
+        public void Add(PlayerRef player, PlayerNetworkData data)
         {
             _players.TryAdd(player, data);
         }
 
-        public void SetPlayer(PlayerRef player, PlayerNetworkData data)
+        public void Set(PlayerRef player, PlayerNetworkData newData)
         {
-            _players[player] = data;
+            if (!_players.ContainsKey(player)) return;
+            
+            _players[player] = newData;
         }
 
-        public void RemovePlayer(PlayerRef player)
+        public void Remove(PlayerRef player)
         {
             _players.Remove(player);
         }
 
-        public bool RemovePlayer(PlayerRef player, out PlayerNetworkData data)
+        public bool Remove(PlayerRef player, out PlayerNetworkData data)
         {
             return _players.Remove(player, out data);
         }
 
-        public bool GetPlayer(PlayerRef player, out PlayerNetworkData data)
+        public bool Get(PlayerRef player, out PlayerNetworkData data)
         {
             return _players.TryGetValue(player, out data);
         }
 
-        public bool ContainsPlayer(PlayerRef player)
+        public bool Contains(PlayerRef player)
         {
             return _players.ContainsKey(player);
         }
