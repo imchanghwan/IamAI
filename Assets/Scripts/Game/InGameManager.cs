@@ -24,12 +24,14 @@ namespace Game
         private void OnEnable()
         {
             _networkEvents.OnSceneLoadDone.AddListener(OnSceneLoadDone);
+            _networkEvents.PlayerJoined.AddListener(OnPlayerJoined);
             _networkEvents.PlayerLeft.AddListener(OnPlayerLeft);
         }
 
         private void OnDisable()
         {
             _networkEvents.OnSceneLoadDone.RemoveListener(OnSceneLoadDone);
+            _networkEvents.PlayerJoined.RemoveListener(OnPlayerJoined);
             _networkEvents.PlayerLeft.RemoveListener(OnPlayerLeft);
         }
 
@@ -38,16 +40,14 @@ namespace Game
             SpawnAllPlayers(runner);
         }
 
-        private void OnPlayerJoin(NetworkRunner runner, PlayerRef player)
+        private void OnPlayerJoined(NetworkRunner runner, PlayerRef player)
         {
             SpawnPlayer(runner, player);
-            // SessionManager.Instance.AddPlayer(player, new PlayerData(player, ));
         }
         
         private void OnPlayerLeft(NetworkRunner runner, PlayerRef player)
         {
             if (!_players.Remove(player, out var obj)) return;
-            PlayerDataManager.Instance.Remove(player);
             runner.Despawn(obj);
         }
 

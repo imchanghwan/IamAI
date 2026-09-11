@@ -25,6 +25,8 @@ namespace UI
         private void Awake()
         {
             _runner = NetworkManager.Instance.Runner;
+
+            startButton.enabled = _runner.IsServer;
         }
 
         private void Start()
@@ -52,6 +54,12 @@ namespace UI
         private void OnStartButtonClick()
         {
             if (!_runner.IsServer) return;
+
+            if (SessionManager.Instance.PlayerCount < SessionManager.MinPlayers)
+            {
+                Debug.LogError("Player count is too low");
+                // return;
+            }
             
             var sceneIndex = SceneName.GetIndex(SceneName.Game);
             _runner.LoadScene(SceneRef.FromIndex(sceneIndex));

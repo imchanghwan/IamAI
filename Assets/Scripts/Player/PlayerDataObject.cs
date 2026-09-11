@@ -1,12 +1,17 @@
+using Entity;
 using Fusion;
 using Network;
 using Room;
+using UnityEngine;
 
 namespace Player
 {
-    public class PlayerNetworkData : NetworkBehaviour
+    public class PlayerDataObject : NetworkBehaviour
     {
-        [Networked, OnChangedRender(nameof(OnDataChanged))]
+        [Networked]
+        public EntityNetworkData EntityData { get; private set; }
+        
+        [Networked, OnChangedRender(nameof(OnNicknameChanged))]
         public NetworkString<_32> Nickname { get; private set; }
     
         public override void Spawned()
@@ -29,7 +34,7 @@ namespace Player
             PlayerSlotUIManager.Instance?.Remove(player);
         }
 
-        private void OnDataChanged()
+        private void OnNicknameChanged()
         {
             var player = Object.InputAuthority;
             gameObject.name = $"Player_{player.AsIndex:0000}";

@@ -8,6 +8,11 @@ namespace Network
 {
     public class SessionManager : SingletonPersistent<SessionManager>
     {
+        public const int MinPlayers = 2;
+        public const int MaxPlayers = 8;
+
+        public int PlayerCount => RoomInfo.PlayerCount;
+        
         public string RoomCode => (string)RoomInfo?.Properties[PrefKeys.RoomCode];
         public bool IsPrivate => (bool)RoomInfo?.Properties[PrefKeys.IsPrivate];
         
@@ -70,7 +75,7 @@ namespace Network
 
         private async Task<StartGameResult> StartGame(
             GameMode gameMode, string sessionName, int sceneIndex,
-            int maxPlayers = 8, Dictionary<string, SessionProperty> customProps = null,
+            int maxPlayers = MaxPlayers, Dictionary<string, SessionProperty> customProps = null,
             bool isVisible = true, bool isOpen = true)
         {
             var runner = NetworkManager.Instance.CreateRunner();

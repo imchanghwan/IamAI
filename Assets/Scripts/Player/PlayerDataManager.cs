@@ -5,18 +5,18 @@ namespace Player
 {
     public class PlayerDataManager : SingletonPersistent<PlayerDataManager>
     {
-        private readonly Dictionary<PlayerRef, PlayerNetworkData> _players = new();
+        private readonly Dictionary<PlayerRef, PlayerDataObject> _players = new();
 
-        public void Add(PlayerRef player, PlayerNetworkData data)
+        public void Add(PlayerRef player, PlayerDataObject dataObject)
         {
-            _players.TryAdd(player, data);
+            _players.TryAdd(player, dataObject);
         }
 
-        public void Set(PlayerRef player, PlayerNetworkData newData)
+        public void Set(PlayerRef player, PlayerDataObject newDataObject)
         {
             if (!_players.ContainsKey(player)) return;
             
-            _players[player] = newData;
+            _players[player] = newDataObject;
         }
 
         public void Remove(PlayerRef player)
@@ -24,14 +24,14 @@ namespace Player
             _players.Remove(player);
         }
 
-        public bool Remove(PlayerRef player, out PlayerNetworkData data)
+        public bool Remove(PlayerRef player, out PlayerDataObject dataObject)
         {
-            return _players.Remove(player, out data);
+            return _players.Remove(player, out dataObject);
         }
 
-        public bool Get(PlayerRef player, out PlayerNetworkData data)
+        public bool Get(PlayerRef player, out PlayerDataObject dataObject)
         {
-            return _players.TryGetValue(player, out data);
+            return _players.TryGetValue(player, out dataObject);
         }
 
         public bool Contains(PlayerRef player)
@@ -39,7 +39,7 @@ namespace Player
             return _players.ContainsKey(player);
         }
 
-        public Dictionary<PlayerRef, PlayerNetworkData>.Enumerator GetEnumerator()
+        public Dictionary<PlayerRef, PlayerDataObject>.Enumerator GetEnumerator()
         {
             return _players.GetEnumerator();
         }

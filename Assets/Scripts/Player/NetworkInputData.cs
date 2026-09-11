@@ -1,10 +1,11 @@
 using Fusion;
 using UnityEngine;
 
-namespace Input
+namespace Player
 {
     public struct NetworkInputData : INetworkInput
     {
-        public Vector2 MoveDirection { get; set; }
+        public Vector2 MoveDirection;
+        public NetworkBool IsDashing;
     }
 }
