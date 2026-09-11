@@ -16,17 +16,17 @@ namespace Player
             var player = Object.InputAuthority;
             gameObject.name = $"Player_{player.AsIndex:0000}";
             PlayerDataManager.Instance.Add(player, this);
-            PlayerSlotUIManager.Instance.Add(player, Nickname.ToString());
+            PlayerSlotUIManager.Instance?.Add(player, Nickname.ToString());
     
             if (!HasInputAuthority) return;
-            RPC_SetNickname(GameManager.Instance.Nickname);
+            RPC_SetNickname(GameManager.Instance?.Nickname);
         }
         
         public override void Despawned(NetworkRunner runner, bool hasState)
         {
             var player = Object.InputAuthority;
             PlayerDataManager.Instance.Remove(player);
-            PlayerSlotUIManager.Instance.Remove(player);
+            PlayerSlotUIManager.Instance?.Remove(player);
         }
 
         private void OnDataChanged()
@@ -34,7 +34,7 @@ namespace Player
             var player = Object.InputAuthority;
             gameObject.name = $"Player_{player.AsIndex:0000}";
             PlayerDataManager.Instance.Set(player, this);
-            PlayerSlotUIManager.Instance.Set(player, Nickname.ToString());
+            PlayerSlotUIManager.Instance?.Set(player, Nickname.ToString());
         }
         
         [Rpc(RpcSources.InputAuthority, RpcTargets.StateAuthority)]

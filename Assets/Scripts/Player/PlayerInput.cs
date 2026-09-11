@@ -1,31 +1,32 @@
 using Fusion;
 using Input;
 using Network;
+using UI;
 
 namespace Player
 {
     public class PlayerInput : NetworkBehaviour
     {
-        private NetworkEvents _networkEvents;
-
-        private NetworkInputData InputData => InGameInputManager.Instance.InputData;
+        private NetworkEvents NetworkEvents => NetworkManager.Instance.Events;
+        
 
         public override void Spawned()
         {
             if (!HasInputAuthority) return;
 
-            _networkEvents = NetworkManager.Instance.Events;
-            _networkEvents?.OnInput.AddListener(OnInput);
+            NetworkEvents?.OnInput.AddListener(OnInput);
         }
 
         public override void Despawned(NetworkRunner runner, bool hasState)
         {
-            _networkEvents?.OnInput.RemoveListener(OnInput);
+            if (!HasInputAuthority) return;
+
+            NetworkEvents?.OnInput.RemoveListener(OnInput);
         }
 
         private void OnInput(NetworkRunner runner, NetworkInput input)
         {
-            input.Set(InputData);
+            input.Set(InGameInputManager.Instance.InputData);
         }
     }
 }

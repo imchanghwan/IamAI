@@ -51,10 +51,9 @@ namespace UI
 
         private void OnStartButtonClick()
         {
-            var sceneIndex = SceneName.GetIndex(SceneName.Game);
-            
             if (!_runner.IsServer) return;
             
+            var sceneIndex = SceneName.GetIndex(SceneName.Game);
             _runner.LoadScene(SceneRef.FromIndex(sceneIndex));
         }
     }

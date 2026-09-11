@@ -12,5 +12,15 @@ namespace Utils
         {
             return SceneUtility.GetBuildIndexByScenePath(sceneName);
         }
+
+        public static Scene GetScene(string sceneName)
+        {
+            return SceneManager.GetSceneByName(sceneName);
+        }
+
+        public static string GetNameByScene(Scene scene)
+        {
+            return scene.name;
+        }
     }
 }

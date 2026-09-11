@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using Fusion;
 using UnityEngine;
@@ -21,7 +22,7 @@ namespace Network
 
         public NetworkRunner CreateRunner()
         {
-            if (Runner != null && Runner.IsRunning)
+            if (Runner != null)
                 return Runner;
             
             Runner = Instantiate(runnerPrefab, transform);
@@ -31,10 +32,11 @@ namespace Network
 
         public async Task RemoveRunner()
         {
-            if (Runner == null || !Runner.IsRunning) return;
-            await Runner.Shutdown();
-            Destroy(Runner);
+            var runner = Runner;
+            if (runner == null) return;
             Runner = null;
+            await runner.Shutdown();
+            Destroy(runner.gameObject);
         }
 
         private NetworkEvents CreateEvents()
