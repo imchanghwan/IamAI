@@ -1,12 +1,12 @@
 using System;
 using System.Collections.Generic;
 using Fusion;
-using Input;
-using Network;
-using Player;
+using IamAI.Input;
+using IamAI.Network;
+using IamAI.Player;
 using UnityEngine;
 
-namespace Game
+namespace IamAI.Game
 {
     public class InGameManager : Singleton<InGameManager>
     {

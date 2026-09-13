@@ -1,4 +1,4 @@
-namespace Utils
+namespace IamAI.Utils
 {
     public static class PrefKeys
     {

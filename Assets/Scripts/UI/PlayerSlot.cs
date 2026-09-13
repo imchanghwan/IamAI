@@ -1,10 +1,10 @@
 using Fusion;
-using Network;
-using Player;
+using IamAI.Network;
+using IamAI.Player;
 using TMPro;
 using UnityEngine;
 
-namespace UI
+namespace IamAI.UI
 {
     public class PlayerSlot : MonoBehaviour
     {

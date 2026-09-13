@@ -1,10 +1,10 @@
 using System;
-using Input;
-using UI;
+using IamAI.Input;
+using IamAI.UI;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-namespace Pause
+namespace IamAI.Pause
 {
     public class PauseInputHandler : MonoBehaviour, InputActions.IUIActions
     {

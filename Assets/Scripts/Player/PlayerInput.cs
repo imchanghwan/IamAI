@@ -1,11 +1,11 @@
 using Fusion;
-using Input;
-using Network;
-using UI;
+using IamAI.Input;
+using IamAI.Network;
+using IamAI.UI;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-namespace Player
+namespace IamAI.Player
 {
     public class PlayerInput : NetworkBehaviour, InputActions.IPlayerActions
     {

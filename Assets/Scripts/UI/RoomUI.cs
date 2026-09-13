@@ -1,17 +1,17 @@
 using System;
 using System.Collections.Generic;
 using Fusion;
-using Network;
+using IamAI.Network;
 using Photon.Client.StructWrapping;
-using Player;
-using Room;
+using IamAI.Player;
+using IamAI.Room;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-using Utils;
+using IamAI.Utils;
 
-namespace UI
+namespace IamAI.UI
 {
     public class RoomUI : MonoBehaviour
     {

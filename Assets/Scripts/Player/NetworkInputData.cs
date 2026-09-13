@@ -1,7 +1,7 @@
 using Fusion;
 using UnityEngine;
 
-namespace Player
+namespace IamAI.Player
 {
     public struct NetworkInputData : INetworkInput
     {

@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using Fusion;
 using UnityEngine;
 
-namespace Network
+namespace IamAI.Network
 {
     public class NetworkManager : SingletonPersistent<NetworkManager>
     {

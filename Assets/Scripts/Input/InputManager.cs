@@ -1,6 +1,6 @@
 using System;
 
-namespace Input
+namespace IamAI.Input
 {
     public class InputManager : SingletonPersistent<InputManager>
     {

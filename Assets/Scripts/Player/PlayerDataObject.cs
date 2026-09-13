@@ -1,10 +1,10 @@
-using Entity;
+using IamAI.Entity;
 using Fusion;
-using Network;
-using Room;
+using IamAI.Network;
+using IamAI.Room;
 using UnityEngine;
 
-namespace Player
+namespace IamAI.Player
 {
     public class PlayerDataObject : NetworkBehaviour
     {

@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using Fusion;
 
-namespace Player
+namespace IamAI.Player
 {
     public class PlayerDataManager : SingletonPersistent<PlayerDataManager>
     {

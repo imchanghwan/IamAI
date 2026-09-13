@@ -1,7 +1,7 @@
 using Fusion;
 using UnityEngine;
 
-namespace Entity
+namespace IamAI.Entity
 {
     public struct EntityNetworkData : INetworkStruct
     {

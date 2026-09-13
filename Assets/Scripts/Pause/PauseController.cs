@@ -1,8 +1,8 @@
-using Input;
-using UI;
+using IamAI.Input;
+using IamAI.UI;
 using UnityEngine;
 
-namespace Pause
+namespace IamAI.Pause
 {
     public class PauseController : MonoBehaviour
     {

@@ -1,11 +1,11 @@
 using System;
-using Network;
+using IamAI.Network;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using Utils;
+using IamAI.Utils;
 
-namespace UI
+namespace IamAI.UI
 {
     public class LobbyUI : MonoBehaviour
     {

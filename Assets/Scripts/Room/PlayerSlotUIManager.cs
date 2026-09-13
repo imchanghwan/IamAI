@@ -1,9 +1,9 @@
 using System.Collections.Generic;
 using Fusion;
-using UI;
+using IamAI.UI;
 using UnityEngine;
 
-namespace Room
+namespace IamAI.Room
 {
     public class PlayerSlotUIManager : Singleton<PlayerSlotUIManager>
     {

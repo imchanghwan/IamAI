@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Camera
+namespace IamAI.Camera
 {
     public class CameraFollow : MonoBehaviour
     {

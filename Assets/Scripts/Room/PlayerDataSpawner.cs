@@ -1,10 +1,10 @@
 using Fusion;
-using Network;
+using IamAI.Network;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using Utils;
+using IamAI.Utils;
 
-namespace Room
+namespace IamAI.Room
 {
     public class PlayerDataSpawner : MonoBehaviour
     {

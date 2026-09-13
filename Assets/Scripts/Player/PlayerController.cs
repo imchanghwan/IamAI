@@ -1,9 +1,9 @@
 using Fusion;
-using Camera;
-using Input;
+using IamAI.Camera;
+using IamAI.Input;
 using UnityEngine;
 
-namespace Player
+namespace IamAI.Player
 {
     public class PlayerController : NetworkBehaviour
     {

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Entity
+namespace IamAI.Entity
 {
     [CreateAssetMenu(menuName = "Entity/Stats")]
     public class EntityStatsData : ScriptableObject

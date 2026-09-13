@@ -1,12 +1,12 @@
 using Fusion;
-using Input;
-using Network;
+using IamAI.Input;
+using IamAI.Network;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-using Utils;
+using IamAI.Utils;
 
-namespace Pause
+namespace IamAI.Pause
 {
     public class InGamePausedPopup : MonoBehaviour
     {

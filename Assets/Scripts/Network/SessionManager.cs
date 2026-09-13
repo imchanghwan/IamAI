@@ -2,9 +2,9 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Fusion;
 using UnityEngine;
-using Utils;
+using IamAI.Utils;
 
-namespace Network
+namespace IamAI.Network
 {
     public class SessionManager : SingletonPersistent<SessionManager>
     {
