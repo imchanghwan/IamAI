@@ -19,6 +19,21 @@ namespace IamAI.Network
         private SessionInfo RoomInfo => NetworkManager.Instance?.Runner?.SessionInfo;
 
         private const int MaxRetries = 10;
+
+        /// <summary>
+        /// 세션의 참가 가능 여부를 바꾼다. 게임 시작 시 닫아 진행 중인 게임으로의 난입을 막는다.
+        /// 세션 속성 변경은 호스트만 가능하므로 클라이언트에서 호출하면 무시된다.
+        /// </summary>
+        public void SetJoinable(bool joinable)
+        {
+            var runner = NetworkManager.Instance.Runner;
+            if (runner == null || !runner.IsServer) return;
+
+            var info = runner.SessionInfo;
+            if (info == null || !info.IsValid) return;
+
+            info.IsOpen = joinable;
+        }
         
         public async Task<StartGameResult> MatchQuick(int sceneIndex)
         {

@@ -60,7 +60,11 @@ namespace IamAI.UI
                 Debug.LogError("Player count is too low");
                 // return;
             }
-            
+
+            // 게임이 시작되면 세션을 닫아 빠른 매칭으로 난입하는 것을 막는다.
+            // 방으로 복귀하는 흐름이 생기면 그 시점에 SetJoinable(true)로 되돌려야 한다.
+            SessionManager.Instance.SetJoinable(false);
+
             var sceneIndex = SceneName.GetIndex(SceneName.Game);
             _runner.LoadScene(SceneRef.FromIndex(sceneIndex));
         }
