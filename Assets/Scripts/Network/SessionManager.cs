@@ -82,18 +82,35 @@ namespace IamAI.Network
             runner.ProvideInput = true;
 
             var sceneManager = NetworkManager.Instance.SceneManager;
-            
-            return await runner.StartGame(new StartGameArgs
+
+            StartGameResult result;
+            try
             {
-                GameMode          = gameMode,
-                SessionName       = sessionName,
-                Scene          = SceneRef.FromIndex(sceneIndex),
-                SceneManager      = sceneManager,
-                PlayerCount       = maxPlayers,
-                SessionProperties = customProps,
-                IsVisible         = isVisible,
-                IsOpen            = isOpen
-            });
+                result = await runner.StartGame(new StartGameArgs
+                {
+                    GameMode          = gameMode,
+                    SessionName       = sessionName,
+                    Scene             = SceneRef.FromIndex(sceneIndex),
+                    SceneManager      = sceneManager,
+                    PlayerCount       = maxPlayers,
+                    SessionProperties = customProps,
+                    IsVisible         = isVisible,
+                    IsOpen            = isOpen
+                });
+            }
+            catch
+            {
+                // 예외로 중단된 러너도 재사용할 수 없다.
+                await NetworkManager.Instance.RemoveRunner();
+                throw;
+            }
+
+            // NetworkRunner는 1회용. 실패한 러너를 남겨두면 다음 CreateRunner()가 그대로 반환해
+            // 이미 사용된 러너로 StartGame을 다시 호출하게 된다.
+            if (!result.Ok)
+                await NetworkManager.Instance.RemoveRunner();
+
+            return result;
         }
     }
 }
