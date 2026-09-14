@@ -1,3 +1,4 @@
+using System;
 using Fusion;
 using IamAI.Input;
 using IamAI.Network;
@@ -50,7 +51,19 @@ namespace IamAI.Pause
 
         private async void OnClickExitButton()
         {
-            await NetworkManager.Instance.RemoveRunner();
+            exitButton.interactable = false;
+
+            try
+            {
+                await NetworkManager.Instance.RemoveRunner();
+                // 성공하면 OnShutdown → 로비 씬 로드. 버튼을 되돌리지 않는다.
+            }
+            catch (Exception e)
+            {
+                // async void에서 예외가 새면 나가기 버튼이 잠겨 게임에서 못 빠져나온다.
+                Debug.LogException(e);
+                exitButton.interactable = true;
+            }
         }
 
         private void OnClickContinueButton()

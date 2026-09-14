@@ -48,7 +48,19 @@ namespace IamAI.UI
         
         private async void OnLeaveButtonClick()
         {
-            await NetworkManager.Instance.RemoveRunner();
+            leaveButton.interactable = false;
+
+            try
+            {
+                await NetworkManager.Instance.RemoveRunner();
+                // 성공하면 OnShutdown → 로비 씬 로드. 버튼을 되돌리지 않는다.
+            }
+            catch (Exception e)
+            {
+                // async void에서 예외가 새면 버튼이 잠긴 채로 방에 갇힌다.
+                Debug.LogException(e);
+                leaveButton.interactable = true;
+            }
         }
 
         private void OnStartButtonClick()

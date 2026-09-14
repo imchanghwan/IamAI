@@ -14,6 +14,10 @@ namespace IamAI.UI
         [SerializeField] private Button createButton;
         [SerializeField] private TMP_InputField roomCodeInputField;
         [SerializeField] private Button joinButton;
+
+        [Header("안내 문구 (선택)")]
+        [Tooltip("연결하면 실패 사유가 화면에 표시된다. 비워두면 로그로만 남는다.")]
+        [SerializeField] private TMP_Text statusText;
         
         private string NicknameText
         {
@@ -49,42 +53,64 @@ namespace IamAI.UI
         private async void OnQuickMatchButtonClick()
         {
             SetUIInteractable(false);
-            GameManager.Instance.Nickname = NicknameText;
-            int sceneIndex = SceneName.GetIndex(SceneName.Room);
-            var result = await SessionManager.Instance.MatchQuick(sceneIndex);
-            
-            if (result is { Ok: true })
+            bool entered = false;
+
+            try
             {
-                string roomCode = SessionManager.Instance.RoomCode;
-                Debug.Log($"[QuickJoin] 참가 성공! 방 코드: {roomCode}");
-                // UI 전환, 씬 로드 등
+                GameManager.Instance.Nickname = NicknameText;
+                int sceneIndex = SceneName.GetIndex(SceneName.Room);
+                var result = await SessionManager.Instance.MatchQuick(sceneIndex);
+
+                entered = result is { Ok: true };
+                if (entered)
+                    Debug.Log($"[QuickJoin] 참가 성공! 방 코드: {SessionManager.Instance.RoomCode}");
+                else
+                    ShowMessage(ShutdownReasonMessage.Get(result));
             }
-            else
+            catch (Exception e)
             {
-                SetUIInteractable(true);
-                Debug.LogError($"매칭 실패: {result?.ShutdownReason}");
-                // 오류 UI 표시 등
+                // async void에서 예외가 새면 UI가 잠긴 채로 영구히 멈춘다.
+                Debug.LogException(e);
+                ShowMessage(ShutdownReasonMessage.Unknown);
+            }
+            finally
+            {
+                // 성공하면 씬이 전환되므로 잠금을 유지한다. 실패·예외일 때만 되돌린다.
+                if (!entered) SetUIInteractable(true);
             }
         }
 
         private async void OnCreateButtonClick()
         {
             SetUIInteractable(false);
-            GameManager.Instance.Nickname = NicknameText;
-            int sceneIndex = SceneName.GetIndex(SceneName.Room);
-            var result = await SessionManager.Instance.CreateRoom(sceneIndex);
-            
-            if (result is { Ok: true })
+            bool entered = false;
+
+            try
             {
-                string roomCode = SessionManager.Instance.RoomCode;
-                bool isPrivate = SessionManager.Instance.IsPrivate;
-                
-                Debug.Log($"[{roomCode}] 방 생성 성공! ({(isPrivate ? "비공개" : "공개")})");
+                GameManager.Instance.Nickname = NicknameText;
+                int sceneIndex = SceneName.GetIndex(SceneName.Room);
+                var result = await SessionManager.Instance.CreateRoom(sceneIndex);
+
+                entered = result is { Ok: true };
+                if (entered)
+                {
+                    var roomCode = SessionManager.Instance.RoomCode;
+                    var isPrivate = SessionManager.Instance.IsPrivate;
+                    Debug.Log($"[{roomCode}] 방 생성 성공! ({(isPrivate ? "비공개" : "공개")})");
+                }
+                else
+                {
+                    ShowMessage(ShutdownReasonMessage.Get(result));
+                }
             }
-            else
+            catch (Exception e)
             {
-                SetUIInteractable(true);
-                Debug.LogError($"방 생성 실패: {result?.ShutdownReason}");
+                Debug.LogException(e);
+                ShowMessage(ShutdownReasonMessage.Unknown);
+            }
+            finally
+            {
+                if (!entered) SetUIInteractable(true);
             }
         }
 
@@ -94,25 +120,45 @@ namespace IamAI.UI
             // 의도하지 않은 방에 들어간다. UI를 잠그기 전에 먼저 막는다.
             if (!SessionManager.IsValidRoomCode(RoomCode))
             {
-                Debug.LogError($"방 코드는 숫자 {SessionManager.RoomCodeLength}자리여야 합니다.");
+                ShowMessage($"방 코드는 숫자 {SessionManager.RoomCodeLength}자리여야 합니다.");
                 return;
             }
 
             SetUIInteractable(false);
-            GameManager.Instance.Nickname = NicknameText;
-            int sceneIndex = SceneName.GetIndex(SceneName.Room);
-            var result = await SessionManager.Instance.JoinRoom(RoomCode, sceneIndex);
+            bool entered = false;
 
-            if (result is { Ok: true })
+            try
             {
-                string roomCode = SessionManager.Instance.RoomCode;
-                Debug.Log($"[{roomCode}] 방 참가 성공!");
+                GameManager.Instance.Nickname = NicknameText;
+                int sceneIndex = SceneName.GetIndex(SceneName.Room);
+                var result = await SessionManager.Instance.JoinRoom(RoomCode, sceneIndex);
+
+                entered = result is { Ok: true };
+                if (entered)
+                    Debug.Log($"[{SessionManager.Instance.RoomCode}] 방 참가 성공!");
+                else
+                    ShowMessage(ShutdownReasonMessage.Get(result));
             }
-            else
+            catch (Exception e)
             {
-                SetUIInteractable(true);
-                Debug.LogError($"방 참가 실패: {result.ShutdownReason}");
+                Debug.LogException(e);
+                ShowMessage(ShutdownReasonMessage.Unknown);
             }
+            finally
+            {
+                if (!entered) SetUIInteractable(true);
+            }
+        }
+
+        /// <summary>
+        /// 사용자에게 보여줄 안내 문구. statusText가 연결돼 있으면 화면에도 표시한다.
+        /// </summary>
+        private void ShowMessage(string message)
+        {
+            Debug.LogWarning(message);
+
+            if (statusText != null)
+                statusText.text = message;
         }
 
         private void SetUIInteractable(bool interactable)

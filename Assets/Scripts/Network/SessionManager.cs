@@ -31,12 +31,54 @@ namespace IamAI.Network
             return true;
         }
 
-        public int PlayerCount => RoomInfo.PlayerCount;
-        
-        public string RoomCode => (string)RoomInfo?.Properties[PrefKeys.RoomCode];
-        public bool IsPrivate => (bool)RoomInfo?.Properties[PrefKeys.IsPrivate];
-        
-        private SessionInfo RoomInfo => NetworkManager.Instance?.Runner?.SessionInfo;
+        /// <summary>세션에 들어가 있지 않으면 0.</summary>
+        public int PlayerCount => RoomInfo?.PlayerCount ?? 0;
+
+        /// <summary>세션 속성을 읽을 수 없으면 빈 문자열.</summary>
+        public string RoomCode =>
+            TryGetProperty(PrefKeys.RoomCode, out var value) ? (string)value : string.Empty;
+
+        /// <summary>세션 속성을 읽을 수 없으면 false(공개방 취급).</summary>
+        public bool IsPrivate =>
+            TryGetProperty(PrefKeys.IsPrivate, out var value) && (bool)value;
+
+        /// <summary>
+        /// 현재 세션 정보. 유효하지 않으면 null.
+        /// `NetworkManager.Instance`와 `Runner`는 UnityEngine.Object라 `?.`가 fake null을
+        /// 걸러내지 못한다(파괴된 객체에 접근해 MissingReferenceException). 그래서 `!= null`로 확인한다.
+        /// </summary>
+        private SessionInfo RoomInfo
+        {
+            get
+            {
+                var manager = NetworkManager.Instance;
+                if (manager == null) return null;
+
+                var runner = manager.Runner;
+                if (runner == null) return null;
+
+                var info = runner.SessionInfo;
+                return info != null && info.IsValid ? info : null;
+            }
+        }
+
+        /// <summary>
+        /// 세션 커스텀 속성을 안전하게 읽는다.
+        /// 세션이 없거나 키가 아직 도착하지 않은 경우(참가 직후 등)에도 예외를 내지 않는다.
+        /// </summary>
+        private bool TryGetProperty(string key, out SessionProperty value)
+        {
+            value = default;
+
+            var info = RoomInfo;
+            if (info == null) return false;
+
+            var properties = info.Properties;
+            if (properties == null || !properties.ContainsKey(key)) return false;
+
+            value = properties[key];
+            return true;
+        }
 
         private const int MaxRetries = 10;
 
