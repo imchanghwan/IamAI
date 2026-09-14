@@ -16,17 +16,21 @@ namespace IamAI
     /// </summary>
     public static class Bootstrap
     {
-        /// <summary>Resources 아래 매니저 프리팹 경로(확장자 없음).</summary>
-        private const string ManagersResourcePath = "Managers";
+        /// <summary>Resources 아래 매니저 프리팹들이 든 폴더 경로.</summary>
+        private const string ManagersFolder = "Managers";
 
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
         private static void EnsureManagers()
         {
-            var prefab = Resources.Load<GameObject>(ManagersResourcePath);
-            if (prefab == null) return; // 프리팹 미구성 — 씬 배치 방식으로 동작
-
-            // 생성된 매니저들은 각자의 Awake에서 DontDestroyOnLoad로 살아남는다.
-            Object.Instantiate(prefab);
+            // 폴더 안의 매니저 프리팹을 전부 생성한다. 폴더가 없으면 빈 배열이라 no-op이고,
+            // 매니저를 씬에 직접 둔 기존 방식과도 호환된다.
+            // 매니저들은 서로 Awake 의존이 없어 생성 순서에 영향받지 않는다.
+            var prefabs = Resources.LoadAll<GameObject>(ManagersFolder);
+            foreach (var prefab in prefabs)
+            {
+                // 각 매니저는 자기 Awake에서 DontDestroyOnLoad로 살아남는다.
+                Object.Instantiate(prefab);
+            }
         }
     }
 }
