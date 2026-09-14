@@ -1,11 +1,10 @@
 using Fusion;
-using IamAI.Network;
 using IamAI.Player;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using IamAI.Utils;
 
-namespace IamAI.Room
+namespace IamAI.Network
 {
     /// <summary>
     /// 플레이어 데이터 객체의 생성·정리를 담당한다.
