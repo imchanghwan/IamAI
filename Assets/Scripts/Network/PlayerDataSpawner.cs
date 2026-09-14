@@ -65,6 +65,13 @@ namespace IamAI.Network
 
         private void OnShutDown(NetworkRunner runner, ShutdownReason shutdownReason)
         {
+            // 이 스포너는 DDOL이라 Lobby에서도 살아 OnShutdown을 받는다.
+            // Lobby에서의 셧다운은 StartGame 실패(참가·생성)이고, 그 안내는 LobbyUI가
+            // 직접 한다. 여기서 또 LoadScene(Lobby)하면 진행 중이던 LobbyUI가 파괴돼
+            // await 뒤 코드가 죽은 오브젝트를 건드린다. 그래서 Lobby면 손대지 않는다.
+            if (SceneManager.GetActiveScene().name == SceneName.Lobby) return;
+
+            // Room·Game에서 끊긴 경우만 여기서 로비로 돌린다.
             // 사유를 아는 건 여기뿐이고 보여줄 곳은 Lobby라, 씬을 넘겨 전달한다.
             // Ok는 사용자가 직접 나가기를 눌러 정상 종료된 경우라 안내가 필요 없다.
             if (shutdownReason != ShutdownReason.Ok)
