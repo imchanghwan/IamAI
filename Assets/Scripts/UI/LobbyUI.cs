@@ -1,4 +1,6 @@
 using System;
+using System.Threading.Tasks;
+using Fusion;
 using IamAI.Network;
 using TMPro;
 using UnityEngine;
@@ -52,66 +54,21 @@ namespace IamAI.UI
 
         private async void OnQuickMatchButtonClick()
         {
-            SetUIInteractable(false);
-            bool entered = false;
-
-            try
-            {
-                GameManager.Instance.Nickname = NicknameText;
-                int sceneIndex = SceneName.GetIndex(SceneName.Room);
-                var result = await SessionManager.Instance.MatchQuick(sceneIndex);
-
-                entered = result is { Ok: true };
-                if (entered)
-                    Debug.Log($"[QuickJoin] 참가 성공! 방 코드: {SessionManager.Instance.RoomCode}");
-                else
-                    ShowMessage(ShutdownReasonMessage.Get(result));
-            }
-            catch (Exception e)
-            {
-                // async void에서 예외가 새면 UI가 잠긴 채로 영구히 멈춘다.
-                Debug.LogException(e);
-                ShowMessage(ShutdownReasonMessage.Unknown);
-            }
-            finally
-            {
-                // 성공하면 씬이 전환되므로 잠금을 유지한다. 실패·예외일 때만 되돌린다.
-                if (!entered) SetUIInteractable(true);
-            }
+            await EnterRoom(
+                sceneIndex => SessionManager.Instance.MatchQuick(sceneIndex),
+                () => $"[QuickJoin] 참가 성공! 방 코드: {SessionManager.Instance.RoomCode}");
         }
 
         private async void OnCreateButtonClick()
         {
-            SetUIInteractable(false);
-            bool entered = false;
-
-            try
-            {
-                GameManager.Instance.Nickname = NicknameText;
-                int sceneIndex = SceneName.GetIndex(SceneName.Room);
-                var result = await SessionManager.Instance.CreateRoom(sceneIndex);
-
-                entered = result is { Ok: true };
-                if (entered)
+            await EnterRoom(
+                sceneIndex => SessionManager.Instance.CreateRoom(sceneIndex),
+                () =>
                 {
-                    var roomCode = SessionManager.Instance.RoomCode;
                     var isPrivate = SessionManager.Instance.IsPrivate;
-                    Debug.Log($"[{roomCode}] 방 생성 성공! ({(isPrivate ? "비공개" : "공개")})");
-                }
-                else
-                {
-                    ShowMessage(ShutdownReasonMessage.Get(result));
-                }
-            }
-            catch (Exception e)
-            {
-                Debug.LogException(e);
-                ShowMessage(ShutdownReasonMessage.Unknown);
-            }
-            finally
-            {
-                if (!entered) SetUIInteractable(true);
-            }
+                    return $"[{SessionManager.Instance.RoomCode}] 방 생성 성공! " +
+                           $"({(isPrivate ? "비공개" : "공개")})";
+                });
         }
 
         private async void OnJoinButtonClick()
@@ -124,28 +81,48 @@ namespace IamAI.UI
                 return;
             }
 
+            // RoomCode는 요청 시점이 아니라 지금 값을 캡처한다.
+            var roomCode = RoomCode;
+            await EnterRoom(
+                sceneIndex => SessionManager.Instance.JoinRoom(roomCode, sceneIndex),
+                () => $"[{SessionManager.Instance.RoomCode}] 방 참가 성공!");
+        }
+
+        /// <summary>
+        /// 세 가지 세션 진입 경로(빠른 매칭·방 생성·코드 참가)의 공통 흐름.
+        /// UI 잠금 → 요청 → 결과 처리 순서로 진행하며, 실패·예외일 때만 잠금을 되돌린다.
+        /// </summary>
+        /// <param name="request">방 씬 인덱스를 받아 세션 진입을 수행하는 요청.</param>
+        /// <param name="buildSuccessLog">성공 시 남길 로그. 성공했을 때만 평가된다.</param>
+        private async Task EnterRoom(
+            Func<int, Task<StartGameResult>> request,
+            Func<string> buildSuccessLog)
+        {
             SetUIInteractable(false);
-            bool entered = false;
+            var entered = false;
 
             try
             {
                 GameManager.Instance.Nickname = NicknameText;
-                int sceneIndex = SceneName.GetIndex(SceneName.Room);
-                var result = await SessionManager.Instance.JoinRoom(RoomCode, sceneIndex);
+
+                var sceneIndex = SceneName.GetIndex(SceneName.Room);
+                var result = await request(sceneIndex);
 
                 entered = result is { Ok: true };
                 if (entered)
-                    Debug.Log($"[{SessionManager.Instance.RoomCode}] 방 참가 성공!");
+                    Debug.Log(buildSuccessLog());
                 else
                     ShowMessage(ShutdownReasonMessage.Get(result));
             }
             catch (Exception e)
             {
+                // async void 핸들러에서 예외가 새면 UI가 잠긴 채로 영구히 멈춘다.
                 Debug.LogException(e);
                 ShowMessage(ShutdownReasonMessage.Unknown);
             }
             finally
             {
+                // 성공하면 씬이 전환되므로 잠금을 유지한다. 실패·예외일 때만 되돌린다.
                 if (!entered) SetUIInteractable(true);
             }
         }
