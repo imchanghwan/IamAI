@@ -65,6 +65,15 @@ namespace IamAI.Network
 
         private void OnShutDown(NetworkRunner runner, ShutdownReason shutdownReason)
         {
+            // 사유를 아는 건 여기뿐이고 보여줄 곳은 Lobby라, 씬을 넘겨 전달한다.
+            // Ok는 사용자가 직접 나가기를 눌러 정상 종료된 경우라 안내가 필요 없다.
+            if (shutdownReason != ShutdownReason.Ok)
+            {
+                // 매핑이 Unknown으로 떨어질 때 실제 사유를 추적할 수 있도록 원본 값도 남긴다.
+                Debug.Log($"[Shutdown] {shutdownReason}");
+                GameManager.Instance.SetPendingMessage(ShutdownReasonMessage.Get(shutdownReason));
+            }
+
             SceneManager.LoadScene(SceneName.Lobby);
         }
     }

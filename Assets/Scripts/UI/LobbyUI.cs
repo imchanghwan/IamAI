@@ -36,6 +36,10 @@ namespace IamAI.UI
             // 입력 단계에서 형식을 강제한다. 인스펙터 설정과 무관하게 항상 적용되도록 코드에서 지정.
             roomCodeInputField.contentType    = TMP_InputField.ContentType.IntegerNumber;
             roomCodeInputField.characterLimit = SessionManager.RoomCodeLength;
+
+            // 세션이 끊겨 로비로 돌아온 경우. 사유는 끊긴 씬에서 담아 보낸다.
+            if (GameManager.Instance.TryTakePendingMessage(out var pendingMessage))
+                ShowMessage(pendingMessage);
         }
 
         private void OnEnable()
