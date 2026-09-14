@@ -41,6 +41,33 @@ https://app.notion.com/p/3dab6047de2581449b18c81b7f65a7c5
 
 ### 검증 제약
 
-이 저장소의 Fusion 어셈블리는 Git LFS 포인터로 저장돼 있고, 원격 세션에는
-Unity·.NET 컴파일러가 없다. 따라서 **원격 세션에서는 컴파일 검증을 할 수 없다.**
+원격 세션에는 Unity·.NET 컴파일러가 없다. **컴파일 검증은 불가능하다.**
 코드 변경 시 이 점을 명시하고, 위 규칙대로 기능 테스트 리스트를 제공한다.
+
+다만 **Fusion API 시그니처는 직접 조회할 수 있다.** 추측으로 답하지 말고 확인할 것.
+
+Fusion 어셈블리는 Git LFS 포인터로 저장돼 있어, 새 세션에서는 아래 절차가 필요하다:
+
+```bash
+apt-get install -y git-lfs
+git lfs install --local
+git lfs pull --include="Assets/Photon/Fusion/Assemblies/*.dll"
+pip3 install --timeout 120 --retries 5 dnfile
+```
+
+`dnfile`로 메타데이터를 파싱해 타입·프로퍼티·메서드 시그니처를 확인한다.
+`SessionProperty`는 `Fusion.Realtime.dll`, 나머지 대부분은 `Fusion.Runtime.dll`에 있다.
+LFS 실파일을 받아도 LFS 필터가 포인터로 환산하므로 `git status`는 깨끗하게 유지된다.
+
+#### 확인된 Fusion API (2026-09-14)
+
+| 대상 | 사실 |
+|---|---|
+| `SessionInfo` | class (struct 아님). `?.`·`!= null` 정상 동작 |
+| `SessionInfo.IsOpen` | `bool`, **public 세터 있음** → 방 닫기 가능 |
+| `SessionInfo.IsVisible` | `bool`, public 세터 있음 |
+| `SessionInfo.Properties` | `ReadOnlyDictionary<string, SessionProperty>` → `ContainsKey`·인덱서 사용 가능 |
+| `SessionInfo.IsValid` / `PlayerCount` | `bool` / `int` |
+| `SessionProperty` | class. `string`·`bool`·`int`와 양방향 `op_Implicit` |
+| `NetworkRunner` | `IsShutdown`·`IsServer`·`SessionInfo`·`Shutdown`·`Spawn`·`SetPlayerObject` 모두 public |
+| `ShutdownReason` | 22개 값 (Ok, GameNotFound, GameIsFull, GameClosed, ServerInRoom 등) |
