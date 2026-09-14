@@ -16,8 +16,9 @@ namespace IamAI.Player
         {
             if (!HasInputAuthority) return;
 
+            // 바인딩은 이 컴포넌트에 묶여 로컬 유지, 맵 on/off만 InputManager 경유(P2-4).
             InputManager.Instance.Actions.Player.SetCallbacks(this);
-            InputManager.Instance.Actions.Player.Enable();
+            InputManager.Instance.EnableGameplayInput();
             
             NetworkEvents?.OnInput.AddListener(OnInput);
         }
@@ -27,7 +28,7 @@ namespace IamAI.Player
             if (!HasInputAuthority) return;
 
             InputManager.Instance.Actions.Player.RemoveCallbacks(this);
-            InputManager.Instance.Actions.Player.Disable();
+            InputManager.Instance.DisableGameplayInput();
             
             NetworkEvents?.OnInput.RemoveListener(OnInput);
         }

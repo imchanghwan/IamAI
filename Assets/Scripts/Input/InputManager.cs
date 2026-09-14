@@ -25,16 +25,14 @@ namespace IamAI.Input
             Actions?.Dispose();
         }
 
-        public void SetGameContext()
-        {
-            Actions.UI.Disable();
-            Actions.Player.Enable();
-        }
+        // 입력맵 켜고 끄기는 전부 여기를 거친다(P2-4). 호출부는 "무슨 맵을 켠다/끈다"만
+        // 알면 되고, Actions.Player/UI를 직접 만지지 않는다.
+        // Player(이동)와 UI(일시정지)는 상호배타가 아니라 인게임 중 함께 켜질 수 있으므로
+        // 하나의 컨텍스트로 묶지 않고 맵별로 토글한다.
+        public void EnableGameplayInput() => Actions.Player.Enable();
+        public void DisableGameplayInput() => Actions.Player.Disable();
 
-        public void SetUIContext()
-        {
-            Actions.Player.Disable();
-            Actions.UI.Enable();
-        }
+        public void EnableMenuInput() => Actions.UI.Enable();
+        public void DisableMenuInput() => Actions.UI.Disable();
     }
 }

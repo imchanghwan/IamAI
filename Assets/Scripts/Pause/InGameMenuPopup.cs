@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 namespace IamAI.Pause
 {
-    public class InGamePausedPopup : MonoBehaviour
+    public class InGameMenuPopup : MonoBehaviour
     {
         [SerializeField] private GameObject popupObject;
         [SerializeField] private Button exitButton;
@@ -56,7 +56,7 @@ namespace IamAI.Pause
         private void OnClickContinueButton()
         {
             popupObject.SetActive(false);
-            InputManager.Instance.Actions.Player.Enable();
+            InputManager.Instance.EnableGameplayInput();
         }
     }
 }
