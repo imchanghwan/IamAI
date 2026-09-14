@@ -11,6 +11,26 @@ namespace IamAI.Network
         public const int MinPlayers = 2;
         public const int MaxPlayers = 8;
 
+        /// <summary>방 코드 자릿수. 생성(CreateRoom)과 검증(IsValidRoomCode)이 이 값을 공유한다.</summary>
+        public const int RoomCodeLength = 4;
+
+        /// <summary>
+        /// 방 코드가 참가에 쓸 수 있는 형식인지 검사한다.
+        /// Fusion은 빈 SessionName을 "아무 공개방에나 참가"로 처리하므로,
+        /// 코드 참가 전에 반드시 통과시켜야 한다.
+        /// </summary>
+        public static bool IsValidRoomCode(string code)
+        {
+            if (string.IsNullOrEmpty(code) || code.Length != RoomCodeLength) return false;
+
+            foreach (var c in code)
+            {
+                if (c < '0' || c > '9') return false;
+            }
+
+            return true;
+        }
+
         public int PlayerCount => RoomInfo.PlayerCount;
         
         public string RoomCode => (string)RoomInfo?.Properties[PrefKeys.RoomCode];
@@ -58,7 +78,7 @@ namespace IamAI.Network
         {
             for (int i = 0; i < MaxRetries; i++)
             {
-                var code   = RandomCodeGenerator.GenerateNumbers(4);
+                var code   = RandomCodeGenerator.GenerateNumbers(RoomCodeLength);
                 var result = await StartGame(
                     GameMode.Host, code, sceneIndex,
                     customProps: new Dictionary<string, SessionProperty>

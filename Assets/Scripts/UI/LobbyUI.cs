@@ -26,6 +26,10 @@ namespace IamAI.UI
         private void Start()
         {
             NicknameText = PlayerPrefs.GetString(PrefKeys.Nickname, string.Empty);
+
+            // 입력 단계에서 형식을 강제한다. 인스펙터 설정과 무관하게 항상 적용되도록 코드에서 지정.
+            roomCodeInputField.contentType    = TMP_InputField.ContentType.IntegerNumber;
+            roomCodeInputField.characterLimit = SessionManager.RoomCodeLength;
         }
 
         private void OnEnable()
@@ -86,6 +90,14 @@ namespace IamAI.UI
 
         private async void OnJoinButtonClick()
         {
+            // 빈 코드를 그대로 넘기면 Fusion이 "아무 공개방에나 참가"로 처리해
+            // 의도하지 않은 방에 들어간다. UI를 잠그기 전에 먼저 막는다.
+            if (!SessionManager.IsValidRoomCode(RoomCode))
+            {
+                Debug.LogError($"방 코드는 숫자 {SessionManager.RoomCodeLength}자리여야 합니다.");
+                return;
+            }
+
             SetUIInteractable(false);
             GameManager.Instance.Nickname = NicknameText;
             int sceneIndex = SceneName.GetIndex(SceneName.Room);
