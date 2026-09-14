@@ -1,7 +1,6 @@
 using IamAI.Entity;
 using Fusion;
 using IamAI.Network;
-using IamAI.Room;
 using UnityEngine;
 
 namespace IamAI.Player
@@ -20,18 +19,17 @@ namespace IamAI.Player
             
             var player = Object.InputAuthority;
             gameObject.name = $"Player_{player.AsIndex:0000}";
+
+            // 등록부에만 알린다. 슬롯 UI는 등록부 이벤트를 구독한다(P1-1).
             PlayerDataManager.Instance.Add(player, this);
-            PlayerSlotUIManager.Instance?.Add(player, Nickname.ToString());
-    
+
             if (!HasInputAuthority) return;
-            RPC_SetNickname(GameManager.Instance?.Nickname);
+            RPC_SetNickname(GameManager.Instance.Nickname);
         }
-        
+
         public override void Despawned(NetworkRunner runner, bool hasState)
         {
-            var player = Object.InputAuthority;
-            PlayerDataManager.Instance.Remove(player);
-            PlayerSlotUIManager.Instance?.Remove(player);
+            PlayerDataManager.Instance.Remove(Object.InputAuthority);
         }
 
         private void OnNicknameChanged()
@@ -39,7 +37,6 @@ namespace IamAI.Player
             var player = Object.InputAuthority;
             gameObject.name = $"Player_{player.AsIndex:0000}";
             PlayerDataManager.Instance.Set(player, this);
-            PlayerSlotUIManager.Instance?.Set(player, Nickname.ToString());
         }
         
         [Rpc(RpcSources.InputAuthority, RpcTargets.StateAuthority)]

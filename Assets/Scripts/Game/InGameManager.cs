@@ -70,7 +70,10 @@ namespace IamAI.Game
 
             var obj = runner.Spawn(playerPrefab, Vector3.zero, Quaternion.identity, player);
             _players.Add(player, obj);
-            runner.SetPlayerObject(player, obj);
+
+            // SetPlayerObject는 호출하지 않는다. PlayerObject는 데이터 객체 전용이고,
+            // 여기서 덮어쓰면 데이터 객체를 잃어버려 정리되지 않는다(P0-4).
+            // 아바타는 위 _players 등록부로 추적한다.
         }
         
     }
