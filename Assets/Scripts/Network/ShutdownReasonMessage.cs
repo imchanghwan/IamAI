@@ -42,11 +42,13 @@ namespace IamAI.Network
                     return "서버 응답이 없습니다. 네트워크 상태를 확인해 주세요.";
                 case ShutdownReason.ConnectionRefused:
                     return "서버가 연결을 거부했습니다.";
-                case ShutdownReason.DisconnectedByPluginLogic:
-                    return "서버에서 연결이 끊어졌습니다.";
 
                 // 호스트 (D1: Host Mode — 방장이 나가면 게임 종료)
+                // 방장이 나가면 남은 클라이언트는 ServerInRoom이 아니라
+                // DisconnectedByPluginLogic을 받는다(테스트 A-3에서 확인).
+                // 이 게임엔 강퇴가 없어, 클라 입장에서 이 사유의 사실상 유일한 원인은 방장 이탈이다.
                 case ShutdownReason.ServerInRoom:
+                case ShutdownReason.DisconnectedByPluginLogic:
                     return "방장이 나가 게임이 종료되었습니다.";
                 case ShutdownReason.HostMigration:
                     return "방장이 변경되었습니다.";
