@@ -69,8 +69,8 @@ namespace IamAI.UI
 
             if (SessionManager.Instance.PlayerCount < SessionManager.MinPlayers)
             {
-                Debug.LogError("Player count is too low");
-                // return;
+                Debug.LogWarning($"인원이 부족합니다. 최소 {SessionManager.MinPlayers}명 필요.");
+                return;
             }
 
             // 게임이 시작되면 세션을 닫아 빠른 매칭으로 난입하는 것을 막는다.

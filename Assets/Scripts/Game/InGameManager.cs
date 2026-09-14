@@ -62,9 +62,14 @@ namespace IamAI.Game
         private void SpawnPlayer(NetworkRunner runner, PlayerRef player)
         {
             if (!runner.IsServer) return;
-            var obj = 
-                runner.Spawn(playerPrefab, Vector3.zero, Quaternion.identity, player);
-            _players.TryAdd(player, obj);
+
+            // Spawn 이전에 확인한다. Spawn 후 TryAdd 순서면 같은 플레이어에 두 번 호출될 때
+            // 두 번째 아바타가 등록부에 못 들어간 채 남아 추적도 정리도 불가능해진다.
+            // (OnSceneLoadDone의 SpawnAllPlayers와 OnPlayerJoined가 겹칠 수 있다)
+            if (_players.ContainsKey(player)) return;
+
+            var obj = runner.Spawn(playerPrefab, Vector3.zero, Quaternion.identity, player);
+            _players.Add(player, obj);
             runner.SetPlayerObject(player, obj);
         }
         
