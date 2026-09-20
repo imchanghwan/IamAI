@@ -123,8 +123,9 @@ Lobby → Room → Ready → GameStart → Playing → GameEnd
 
 다음 요소가 필요한지 판단해 문서에 표시합니다.
 
-Scene / GameObject / Prefab / 설정 데이터(ScriptableObject 등) / UI / Input / Animation / VFX / Audio /
-Collider / Physics / Network Object / Network State / RPC·Event / Save Data
+씬(Scene 등) / 오브젝트(GameObject · Entity 등) / 프리팹·프리셋(Prefab 등) / 설정 데이터(ScriptableObject 등) /
+UI / Input / Animation / VFX / Audio / Collider / Physics /
+Network Object / Network State / RPC·Event / Save Data
 
 다만 기획 단계에서 클래스 구조나 디자인 패턴을 결정하지 않습니다.
 
@@ -215,7 +216,7 @@ Collider / Physics / Network Object / Network State / RPC·Event / Save Data
 각 시스템 문서는 다음 순서로 시작합니다.
 
 1. 목적
-2. 분류 (Core/MVP/Optional/Future)
+2. 분류 (Core/MVP/Optional/Future) · 최종 수정일
 3. 핵심 규칙
 4. 주요 수치
 5. 입력
