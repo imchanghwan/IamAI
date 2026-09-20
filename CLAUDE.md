@@ -56,10 +56,23 @@
 - 세부 구현이 방대할 땐, 전체 코드를 쏟지 말고 인터페이스와 diff 요약을 먼저 제시한다.
 - 그래서 모든 변경은 항상 다음 순서로: (1) 계획 → (2) 내 승인 → (3) 작은 diff → (4) 테스트 결과.
 
+## 응답 방식 (간결하게)
+
+- 결론부터 말한다. "도와드리겠습니다" 같은 서론, 요청 되풀이, 마무리 요약 금지.
+- 무엇을 할지 미리 예고하는 메타 설명 금지. 그냥 한다.
+- 아부·칭찬·인사치레 금지.
+- 필러 어구 금지: "~하는 것이 중요합니다", "추가로", "앞서 말씀드린 대로" 등.
+- 한 문장에 한 가지. 능동태.
+- **단, 간결함은 단어 수의 문제지 정직함의 문제가 아니다.** 실패·건너뛴 단계·검증 안 된 값·꼭 필요한 경고는 짧게라도 반드시 남긴다. 짧게 만들려고 caveat를 버리지 않는다.
+- 코드 주석도 기본은 "달지 않음". *어떻게*는 코드가 보여주니, *왜*(비자명한 제약·의도적 예외·함정)만 주석으로 남긴다.
+
 ## 프로젝트 정보
 
-- 상태: **구현 시작 전.** 툴체인/스캐폴드만 존재한다. 게임 로직, Phaser Scene, Colyseus Room/Schema는 명시적으로 지시하기 전까지 추가하지 않는다.
-- 스택: TypeScript(strict, ESM) / Phaser / Vite / Colyseus / ESLint / Prettier / Vitest. 상세는 `docs/ENVIRONMENT.md`.
+- 게임: 《나는 AI다》 웹 버전. 탑다운 2D 멀티플레이 생존. 실제 플레이어 몇 명과 AI 봇 27~32마리가 같은 맵(2400×1800)에 섞여 있고, 플레이어는 군중 속에서 식별·생존한다. 라운드 180초, 최소 2명. 모드: CLASSIC / NIGHT / TAG.
+- 기획서(노션): `나는 AI다 / 《나는 AI다》 시스템 기획` (01~15). 원작은 웹 V4.7. **규칙·수치는 원작 그대로 유지**가 이식 원칙.
+  - Unity/Photon Fusion 2 전용 내용(02 네트워크, 04·08 코드 구조, 14 Unity 입력)은 해당 없음. 웹 스택으로 재설계한다.
+- 상태: **구현 시작 전.** 툴체인/스캐폴드만 존재. 게임 로직, Phaser Scene, Colyseus Room/Schema는 명시적으로 지시하기 전까지 추가하지 않는다.
+- 스택: TypeScript(strict, ESM) / Phaser / Vite / Colyseus / ESLint / Prettier / Vitest. 상세는 `docs/ENVIRONMENT.md`. 배포 계획: Nginx + PM2 + Let's Encrypt (VPS), Steam은 Electron, 모바일은 Capacitor. Electron·Capacitor는 아직 미설치.
 - 구조: npm workspaces `client`, `server`, `shared` (pnpm 사용 안 함). 공용 코드는 `@iamai/shared`로 import.
 - 빌드 명령어: `npm run build` (shared → server → client 순서)
 - 개발 서버: `npm run dev` (client + server 동시 실행)
@@ -69,10 +82,14 @@
 - 수정 금지 파일·영역:
   - `.claude/` (에이전트·설정)
   - `package-lock.json` (직접 편집 금지, npm으로만 갱신)
-  - `dist/`, `client/dist-types/`, `node_modules/` (빌드 산출물, 커밋 대상 아님)
+  - `dist/`, `client/dist-types/`, `node_modules/` (빌드 산출물)
   - `tsconfig.base.json`, `eslint.config.js`, `prettier.config.js`, `vitest.config.ts` 등 루트 설정 (변경 시 사전 승인)
 - 기타 규칙:
-  - 커밋·푸시·GitHub 리모트 생성은 요청이 있을 때만.
+  - 서버 권위(server-authoritative). 사망·충돌·자기장·봇은 서버 Room이 판정·시뮬레이션하고, 클라이언트는 입력 전송과 렌더링만 한다.
+  - 봇은 플레이어와 같은 엔티티 구조·물리 경로를 쓴다. 봇 전용 이동 로직 금지.
+  - MVP는 웹 배포 1종 + CLASSIC(자기장 포함) + 로비 + 재시작 투표 + 조이스틱 공격·방어. NIGHT/TAG/아이템은 그 이후. 범위 축소 순서: TAG → NIGHT → MVP 축소.
+  - 기획서 미정 항목은 임의로 정하지 말고 묻는다: TAG 시간 종료 승패, NIGHT 자기장 적용 여부, 방 코드 자릿수(3 vs 4), 화면 비율 정책, 목표 fps, 속도 단위(프레임 vs 초당).
+  - 커밋·푸시는 요청이 있을 때만. 작업 브랜치는 `web`, 원격은 `imchanghwan/IamAI`.
   - TypeScript는 typescript-eslint가 7을 지원할 때까지 `~6.0` 고정.
   - Colyseus는 현재 0.18.x. 0.16으로 바꿀지는 미정 (변경 전 확인).
   - 의존성 추가·변경은 사전 확인 (0번 원칙).
